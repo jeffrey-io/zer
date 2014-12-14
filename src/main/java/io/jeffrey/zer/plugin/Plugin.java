@@ -13,9 +13,10 @@ import org.mozilla.javascript.Context;
  *
  */
 public class Plugin {
-
+    private final Model  model;
     private final Bridge bridge;
-    public final String  filename;
+    public final File    file;
+    private long         lastTime;
 
     /**
      *
@@ -27,10 +28,10 @@ public class Plugin {
      *             we were unable to load the plugin
      */
     public Plugin(final String filename, final Model model) throws Exception {
-        this.filename = filename;
+        this.file = new File(filename);
+        this.model = model;
         bridge = new Bridge(model);
         reload();
-
     }
 
     /**
@@ -41,9 +42,11 @@ public class Plugin {
      */
     public void evaluate(final String id) {
         final Context context = Context.enter();
+        model.begin();
         try {
             context.evaluateString(bridge, "evaluate(\"" + id + "\");", "avail." + id, 0, null);
         } finally {
+            model.end();
             Context.exit();
         }
     }
@@ -57,6 +60,7 @@ public class Plugin {
      */
     public boolean isActionable(final String id) {
         final Context context = Context.enter();
+        model.begin();
         try {
             final Object result = context.evaluateString(bridge, "available(\"" + id + "\");", "avail." + id, 0, null);
             if (result == null) {
@@ -67,19 +71,31 @@ public class Plugin {
             }
             return false;
         } finally {
+            model.end();
             Context.exit();
         }
     }
 
     /**
-     * reload the plugin
-     *
+     * ping the plugin to see if it needs to be updated
      * @throws Exception
      */
-    public void reload() throws Exception {
+    public boolean ping() throws Exception {
+        if (file.exists() && lastTime != file.lastModified()) {
+            reload();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * reload the plugin
+     */
+    private void reload() throws Exception {
         final Context context = Context.enter();
         try {
-            context.evaluateReader(bridge, new BufferedReader(new FileReader(new File(filename))), filename, 0, null);
+            lastTime = file.lastModified();
+            context.evaluateReader(bridge, new BufferedReader(new FileReader(file)), file.getName(), 0, null);
         } finally {
             Context.exit();
         }

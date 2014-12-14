@@ -6,8 +6,12 @@ import io.jeffrey.zer.plugin.Plugin;
 import java.io.File;
 import java.util.HashMap;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.layout.BorderPane;
@@ -15,6 +19,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 /**
  * The stage which is the actual window shown to the user
@@ -65,6 +70,22 @@ public class ZERStage {
         } else {
             // notify user
         }
+        
+        // when plugins changed, we integrate the changes
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent dontcare) {
+                for(Plugin plugin : plugins.values()) {
+                    try {
+                        plugin.ping();
+                    } catch (Exception e) {
+                        // TODO: notify, or remove the plugin
+                    }
+                }
+            }
+        }));
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
 
         final SurfaceItemEditor editor = new SurfaceItemEditor(left, data, surface, syncs);
         final ActionBar actions = new ActionBar(right, data, surface, plugins, syncs);

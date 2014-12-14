@@ -11,9 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.ComboBox;
 
 /**
- * Generic tool for having a combo box that updates a panel (i.e. the body). This is useful
- * to avoid having to do the whole "add", "update", "delete" cycle. You simply type the name, and
- * either it exists or it doesn't. If it doesn't, then you just edit it anyway.
+ * Generic tool for having a combo box that updates a panel (i.e. the body). This is useful to avoid having to do the whole "add", "update", "delete" cycle. You simply type the name, and either it exists or it doesn't. If it doesn't, then you just edit it anyway.
  *
  * @author jeffrey
  *

@@ -2,6 +2,7 @@ package io.jeffrey.zer;
 
 import io.jeffrey.zer.meta.LayerProperties;
 import io.jeffrey.zer.meta.MetaClass;
+import io.jeffrey.zer.plugin.Model;
 
 import java.io.File;
 import java.util.List;
@@ -24,7 +25,7 @@ public abstract class SurfaceData {
      */
     public static enum SurfaceAction {
         Copy, Cut, DeleteSelection, InverseSelection, NewFile, Paste, Redo, Save, SelectAll, Undo
-    };
+    }
 
     /**
      * indicate that we should open
@@ -32,7 +33,7 @@ public abstract class SurfaceData {
      * @param file
      *            the file that we should open
      */
-    public abstract void actionOpen(File file);
+    public abstract void actionOpen(File file);;
 
     /**
      * add something
@@ -100,15 +101,28 @@ public abstract class SurfaceData {
     public abstract Map<String, MetaClass> getMetaClasses();
 
     /**
-     * Since the child owns what items are selected, this function is responsible
-     * for ensuring that the if we are going to drag things that are already selected,
-     * then they to need to be returned here
+     * @return a model for scripts to manipulate the data
+     */
+    public abstract Model getModel();
+
+    /**
+     * @return where to look for plugins
+     */
+    public abstract File getPluginRoot();
+
+    /**
+     * Since the child owns what items are selected, this function is responsible for ensuring that the if we are going to drag things that are already selected, then they to need to be returned here
      *
      * @param event
      *            where we begin our query for the things to manipulate that are selection
      * @return a set of all ways the selection can be manipulated
      */
     public abstract MouseInteraction getSelectionMovers(AdjustedMouseEvent event);
+
+    /**
+     * @return the current title
+     */
+    public abstract String getTitle();
 
     /**
      * Test whether or not the given event is in a selected item

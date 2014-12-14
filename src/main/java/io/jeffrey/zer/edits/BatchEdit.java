@@ -2,7 +2,7 @@ package io.jeffrey.zer.edits;
 
 /**
  * Very simple implementation of an edit that extends over a vast array of edits
- * 
+ *
  * @author jeffrey
  *
  */
@@ -11,12 +11,13 @@ public class BatchEdit extends Edit {
     private final Edit[] edits;
 
     /**
-     * @param edits the edits that will be combined into one
+     * @param edits
+     *            the edits that will be combined into one
      */
-    public BatchEdit(Edit... edits) {
+    public BatchEdit(final Edit... edits) {
         this.edits = edits;
-        String name = edits[0].name();
-        for (Edit ed : edits) {
+        final String name = edits[0].name();
+        for (final Edit ed : edits) {
             if (!ed.name().equals(name)) {
                 throw new IllegalArgumentException("Invalid Name");
             }
@@ -29,7 +30,7 @@ public class BatchEdit extends Edit {
     @Override
     public String getAsText() {
         String value = edits[0].getAsText();
-        for (Edit ed : edits) {
+        for (final Edit ed : edits) {
             if (!value.equals(ed.getAsText())) {
                 value = "";
             }
@@ -49,8 +50,8 @@ public class BatchEdit extends Edit {
      * {@inheritDoc}
      */
     @Override
-    protected boolean setByText(String txt) {
-        String[] backup = new String[edits.length];
+    protected boolean setByText(final String txt) {
+        final String[] backup = new String[edits.length];
         for (int k = 0; k < edits.length; k++) {
             backup[k] = edits[k].getAsText();
             if (!edits[k].setByText(txt)) {

@@ -1,6 +1,11 @@
 package io.jeffrey.zer;
 
 import io.jeffrey.zer.meta.SurfaceItemEditor;
+import io.jeffrey.zer.plugin.Plugin;
+
+import java.io.File;
+import java.util.HashMap;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
@@ -29,7 +34,8 @@ public class ZERStage {
     public ZERStage(final SurfaceData data, final Stage stage) {
         final BorderPane root = new BorderPane();
 
-        final Text status = new Text("Status Bar? Yes?");
+        // TODO: link status to something... else
+        final Text status = new Text("TODO: put something useful here");
 
         final Canvas canvas = new Canvas(300, 250);
         final Camera camera = data.getCamera();
@@ -43,9 +49,25 @@ public class ZERStage {
 
         final SyncableSet syncs = new SyncableSet();
         final SyncableSet menuSync = new SyncableSet();
+        final HashMap<String, Plugin> plugins = new HashMap<>();
+
+        final File pluginRoot = data.getPluginRoot();
+        if (pluginRoot.exists() && pluginRoot.isDirectory()) {
+            for (final File file : pluginRoot.listFiles()) {
+                if (file.getName().endsWith(".js")) {
+                    try {
+                        plugins.put(file.getName(), new Plugin(file.getPath(), data.getModel()));
+                    } catch (final Exception err) {
+                        // notify user
+                    }
+                }
+            }
+        } else {
+            // notify user
+        }
 
         final SurfaceItemEditor editor = new SurfaceItemEditor(left, data, surface, syncs);
-        final ActionBar actions = new ActionBar(right, data, surface, syncs);
+        final ActionBar actions = new ActionBar(right, data, surface, plugins, syncs);
         syncs.add(editor);
         syncs.add(actions);
         syncs.add(menuSync);
@@ -65,7 +87,7 @@ public class ZERStage {
         surface.render();
 
         final Scene scene = new Scene(root, 900, 950);
-        stage.setTitle("Compose Yourself");
+        stage.setTitle(data.getTitle());
         stage.setScene(scene);
         center.widthProperty().addListener(new ChangeListener<Number>() {
             @Override

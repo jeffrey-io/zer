@@ -11,18 +11,18 @@ import javafx.scene.input.MouseEvent;
  */
 public class AdjustedMouseEvent {
 
-    public final VectorRegister8 position;
     /**
      * is the alt key held down
      */
     public final boolean         altdown;
-
     private final Camera         camera;
 
     /**
      * the actual mouse event with all the raw data
      */
     public final MouseEvent      event;
+
+    public final VectorRegister8 position;
 
     /**
      * public user data that can be attached to the object
@@ -36,7 +36,7 @@ public class AdjustedMouseEvent {
      *            the raw event
      */
     public AdjustedMouseEvent(final Camera camera, final MouseEvent event) {
-        this.position = new VectorRegister8();
+        position = new VectorRegister8();
         position.set_0((event.getX() - camera.tX) / camera.scale, (event.getY() - camera.tY) / camera.scale);
         this.camera = camera;
         this.event = event;
@@ -48,7 +48,7 @@ public class AdjustedMouseEvent {
      *            the point in world space
      * @return the distance between the world point and the point on the screen
      */
-    public double doodadDistance(double wx, double wy) {
+    public double doodadDistance(final double wx, final double wy) {
         final double dx = Math.abs(camera.x(wx) - event.getX());
         final double dy = Math.abs(camera.y(wy) - event.getY());
         return Math.max(dx, dy);

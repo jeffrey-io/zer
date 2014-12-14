@@ -16,11 +16,11 @@ import javafx.scene.text.Text;
  */
 public class Surface {
 
-    public double                 cursor_x;
-    public double                 cursor_y;
-    
     private final Camera          camera;
     private final Canvas          canvas;
+
+    public double                 cursor_x;
+    public double                 cursor_y;
     private final SurfaceData     data;
     private final Text            status;
     private final SelectionWindow window;

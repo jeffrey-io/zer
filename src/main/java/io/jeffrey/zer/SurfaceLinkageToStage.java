@@ -161,8 +161,9 @@ public class SurfaceLinkageToStage {
                     stage.setTitle(file.getName());
                     try {
                         data.execute(SurfaceAction.Save, surface.cursor_x, surface.cursor_y);
+                        stage.setTitle(data.getTitle());
                     } catch (final Exception e) {
-                        e.printStackTrace();
+                        // TODO: log somewhere better
                     }
                     return;
                 } else {
@@ -180,6 +181,7 @@ public class SurfaceLinkageToStage {
                 } else {
                     try {
                         data.execute(SurfaceAction.Save, surface.cursor_x, surface.cursor_y);
+                        stage.setTitle(data.getTitle());
                     } catch (final Exception e) {
                         e.printStackTrace();
                     }

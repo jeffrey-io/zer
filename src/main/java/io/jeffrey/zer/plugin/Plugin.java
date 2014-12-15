@@ -78,7 +78,8 @@ public class Plugin {
 
     /**
      * ping the plugin to see if it needs to be updated
-     * @throws Exception
+     * @throws Exception we failed to reload the file
+     * @return true if the plugin was updated
      */
     public boolean ping() throws Exception {
         if (file.exists() && lastTime != file.lastModified()) {

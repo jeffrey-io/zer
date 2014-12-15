@@ -11,10 +11,12 @@ public class SelectionBand implements MouseInteraction {
     private final SelectionWindow window;
 
     /**
-     * @param camera
-     *            the camera that we intend to manipulate
      * @param event
      *            the raw mouse event to start from
+     * @param window
+     *            the selection window that we are updating
+     * @param data
+     *            the data we are bound too to notify when we update the window
      */
     public SelectionBand(final AdjustedMouseEvent event, final SelectionWindow window, final SurfaceData data) {
         this.data = data;

@@ -31,6 +31,8 @@ public abstract class AbstractMapEditor<T extends AbstractMapEditorItemRequireme
      *            the things to edit
      * @param id
      *            the id selected
+     * @param parent
+     *            the owning sycnable that needs to be updated when the editor edits
      */
     protected AbstractMapEditor(final Map<String, T> things, final String id, final Syncable parent) {
         this.things = things;
@@ -191,7 +193,9 @@ public abstract class AbstractMapEditor<T extends AbstractMapEditorItemRequireme
      * set the title based on the title of the current node
      *
      * @param name
-     *            the new t
+     *            the new title
+     * @param official
+     *            is the title official
      */
     protected abstract void title(String name, boolean official);
 

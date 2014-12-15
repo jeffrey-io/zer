@@ -105,10 +105,16 @@ public class EditBinding {
     /**
      * bind a combobox
      *
-     * @param combobox
+     * @param selector
      *            the combobox to bind
      * @param value
      *            the value to connect to
+     * @param values
+     *            all the current values
+     * @param parent
+     *            the owner that requires update once the value is changed
+     * @param <T>
+     *            the type of what we are selecting
      */
     public <T extends AbstractMapEditorItemRequirements> void bindComboBox(final ComboBox<T> selector, final Edit value, final Map<String, T> values, final Syncable parent) {
         try {
@@ -144,6 +150,8 @@ public class EditBinding {
      *            the visual text field to update
      * @param value
      *            the value to connect to
+     * @param normalize
+     *            the method to normalize the file to a string
      */
     public void bindFile(final String title, final Button button, final TextField ref, final Edit value, final FileSerializer normalize) {
         try {

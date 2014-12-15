@@ -40,8 +40,10 @@ public abstract class SurfaceData {
      *
      * @param type
      *            of the given type
-     * @param at
-     *            the location to put the something
+     * @param x
+     *            the x coordinate of where to put something
+     * @param y
+     *            the y coordinate of where to put something
      */
     public abstract void add(String type, double x, double y);
 
@@ -67,6 +69,12 @@ public abstract class SurfaceData {
      *
      * @param action
      *            the action to execute
+     * @param x
+     *            the x coordinate of where the cursor is for execution
+     * @param y
+     *            the y coordinate of where the cursor is for execution
+     * @throws Exception
+     *             we (for some reason) were unable to execute the request
      */
     public abstract void execute(SurfaceAction action, double x, double y) throws Exception;
 
@@ -136,8 +144,8 @@ public abstract class SurfaceData {
     /**
      * grant the surface a file
      *
-     * @param name
-     *            the name of the surface
+     * @param file
+     *            the file for the surface
      * @return true if the name is valid
      */
     public abstract boolean setFile(File file);
@@ -154,7 +162,7 @@ public abstract class SurfaceData {
     /**
      * force the selection window over all the details
      *
-     * @param window
+     * @param window the current selection window which just updated, so please select items based on it
      */
     public abstract void updateSelectionWindow(SelectionWindow window);
 }

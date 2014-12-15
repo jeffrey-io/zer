@@ -61,7 +61,7 @@ public class Camera {
     /**
      * pull the data for the camera from the given map
      *
-     * @param data
+     * @param data where we write the camera's state
      */
     public void sync(final ObjectDataMap data) {
         dirty = true;

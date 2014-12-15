@@ -21,16 +21,24 @@ public interface SurfaceItemEditorBuilder {
     public interface SurfaceFourColumnGrid {
         /**
          * add an element with a label and a value that spaces 3 columns
+         * @param label the label of the text box
+         * @param value the value of the text field
          */
         public void add(final String label, final Edit value);
 
         /**
          * add an element with label, value, label, value for things like x,y coordinates
+         * @param label0 the label of the first text box
+         * @param value0 the value of the first text field
+         * @param label1 the label of the second text box
+         * @param value1 the value of the second text field
          */
         public void add(final String label0, final Edit value0, final String label1, final Edit value1);
 
         /**
          * add an element with two labels
+         * @param label the label of the text box
+         * @param value the faux value of the text box
          */
         public void add(final String label, final String value);
     }

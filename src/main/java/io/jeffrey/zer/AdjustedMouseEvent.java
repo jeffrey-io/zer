@@ -44,8 +44,10 @@ public class AdjustedMouseEvent {
     }
 
     /**
-     * @param world
-     *            the point in world space
+     * @param wx
+     *            the x coordinate in world space
+     * @param wy
+     *            the y coordinate in world space
      * @return the distance between the world point and the point on the screen
      */
     public double doodadDistance(final double wx, final double wy) {

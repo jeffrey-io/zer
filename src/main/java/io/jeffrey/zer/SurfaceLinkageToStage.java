@@ -53,8 +53,17 @@ public class SurfaceLinkageToStage {
     /**
      * create the menu bar
      *
+     * @param surface
+     *            the surface we need to update when actions happen
      * @param data
-     * @return
+     *            the client's surface data that we talk to
+     * @param stage
+     *            the window that owns us
+     * @param syncable
+     *            consumers that need to be notified when we do something
+     * @param menuSync
+     *            collection of things that need to be updated when events occur
+     * @return a VBox that contains the menu
      */
     public static VBox createLinkedMenuBar(final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync) {
         final VBox top = new VBox();
@@ -235,6 +244,8 @@ public class SurfaceLinkageToStage {
      *            where the user is looking at
      * @param surface
      *            where events are sent
+     * @param syncable
+     *            consumers that need to be notified when we do something
      */
     public static void linkCanvasToSurface(final Canvas canvas, final Camera camera, final Surface surface, final Syncable syncable) {
         final HashMap<MouseButton, MouseInteraction> interactions = new HashMap<>();

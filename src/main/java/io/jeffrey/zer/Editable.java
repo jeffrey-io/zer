@@ -31,6 +31,8 @@ public interface Editable {
     public List<String> getActions();
 
     /**
+     * @param withHistory
+     *            should the links be bound to any concept of a history
      * @return bi-direction links into the data
      */
     public Map<String, Edit> getLinks(boolean withHistory);
@@ -43,6 +45,8 @@ public interface Editable {
     /**
      * @param key
      *            the name of the metadata
+     * @param defaultValue
+     *            the default value should it not be present
      * @return the edit link to the metadata
      */
     public Edit metadataOf(String key, String defaultValue);

@@ -26,9 +26,16 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
 
     /**
      * construct the editor
+     * 
+     * @param allLayers
+     *            all the layers
+     * @param currentLayerId
+     *            the layer we are editing
+     * @param parent
+     *            the parent that needs to be notified when the value has been updated
      */
-    public LayerPropertiesEditor(final Map<String, LayerProperties> things, final String id, final Syncable parent) {
-        super(things, id, parent);
+    public LayerPropertiesEditor(final Map<String, LayerProperties> allLayers, final String currentLayerId, final Syncable parent) {
+        super(allLayers, currentLayerId, parent);
 
         binding = new EditBinding(core, new Syncable() {
             @Override

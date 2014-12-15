@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * Read from a probably mis-typed Map<String, Object> fields.
+ * Read from a probably mis-typed Map fields.
  *
  * This makes it easy to handle the situations where strings should be doubles and doubles are actually integers
  *

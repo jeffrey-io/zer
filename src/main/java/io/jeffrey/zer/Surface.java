@@ -26,12 +26,12 @@ public class Surface {
     private final SelectionWindow window;
 
     /**
-     * @param camera
-     *            the current viewport of the user
      * @param canvas
      *            the actual canvas
      * @param data
      *            the specifics of how the surface gets rendered and touched
+     * @param status
+     *            the textual status that we are free to update
      */
     public Surface(final Canvas canvas, final SurfaceData data, final Text status) {
         this.canvas = canvas;

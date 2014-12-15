@@ -32,9 +32,16 @@ public class MetaClassEditor extends AbstractMapEditor<MetaClass> {
 
     /**
      * construct the editor
+     * 
+     * @param allClasses
+     *            all the classes
+     * @param currentClassId
+     *            the class we are editing
+     * @param parent
+     *            the parent that needs to be notified when the value has been updated
      */
-    public MetaClassEditor(final Map<String, MetaClass> things, final String id, final Syncable parent) {
-        super(things, id, parent);
+    public MetaClassEditor(final Map<String, MetaClass> allClasses, final String currentClassId, final Syncable parent) {
+        super(allClasses, currentClassId, parent);
 
         updateBody();
         syncSelector();

@@ -24,7 +24,7 @@ public abstract class AbstractMapEditorItemRequirements {
     }
 
     /**
-     * return the name of the item
+     * @return the name of the item
      */
     public String name() {
         return name;

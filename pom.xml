@@ -1,9 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>jeffrey-io</groupId>
+	<groupId>io.jeffrey</groupId>
 	<artifactId>zer</artifactId>
-	<version>0.5-alpha</version>
+	<version>0.5</version>
+
+	<name>ZER</name>
+	<description>ZER (Zoom Enhance Rotate) is a 2D manipulation GUI framework. It started as a simple way of composing images.</description>
+	<url>https://github.com/jeffrey-io/zer</url>
+
+	<scm>
+		<url>https://github.com/jeffrey-io/zer</url>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.mozilla</groupId>

@@ -263,7 +263,7 @@ public class SurfaceLinkageToStage {
                 boolean update = false;
                 for (final MouseInteraction interaction : interactions.values()) {
                     if (interaction != null) {
-                        interaction.moved(new AdjustedMouseEvent(camera, evt));
+                        interaction.moved(new AdjustedMouseEvent(camera, evt.getX(), evt.getY(), evt.isAltDown()));
                         update = true;
                     }
                 }
@@ -294,7 +294,7 @@ public class SurfaceLinkageToStage {
             public void handle(final MouseEvent evt) {
                 final MouseInteraction interaction = interactions.get(evt.getButton());
                 if (interaction != null) {
-                    interaction.moved(new AdjustedMouseEvent(camera, evt));
+                    interaction.moved(new AdjustedMouseEvent(camera, evt.getX(), evt.getY(), evt.isAltDown()));
                     interaction.commit();
                     syncable.sync();
                     surface.render();

@@ -1,7 +1,6 @@
 package io.jeffrey.zer;
 
 import io.jeffrey.vector.VectorRegister8;
-import javafx.scene.input.MouseEvent;
 
 /**
  * An adjust mouse event is a mouse event that has been coupled to the document and transformed to the view. The view can be translated and scaled, so this will ensure the (x,y) point of the pouse interaction is correct
@@ -17,10 +16,8 @@ public class AdjustedMouseEvent {
     public final boolean         altdown;
     private final Camera         camera;
 
-    /**
-     * the actual mouse event with all the raw data
-     */
-    public final MouseEvent      event;
+    public final double          clientX;
+    public final double          clientY;
 
     public final VectorRegister8 position;
 
@@ -35,12 +32,13 @@ public class AdjustedMouseEvent {
      * @param event
      *            the raw event
      */
-    public AdjustedMouseEvent(final Camera camera, final MouseEvent event) {
+    public AdjustedMouseEvent(final Camera camera, final double x, final double y, final boolean altdown) {
         position = new VectorRegister8();
-        position.set_0((event.getX() - camera.tX) / camera.scale, (event.getY() - camera.tY) / camera.scale);
+        clientX = x;
+        clientY = y;
+        position.set_0((clientX - camera.tX) / camera.scale, (clientY - camera.tY) / camera.scale);
         this.camera = camera;
-        this.event = event;
-        altdown = event.isAltDown();
+        this.altdown = altdown;
     }
 
     /**
@@ -51,8 +49,8 @@ public class AdjustedMouseEvent {
      * @return the distance between the world point and the point on the screen
      */
     public double doodadDistance(final double wx, final double wy) {
-        final double dx = Math.abs(camera.x(wx) - event.getX());
-        final double dy = Math.abs(camera.y(wy) - event.getY());
+        final double dx = Math.abs(camera.x(wx) - clientX);
+        final double dy = Math.abs(camera.y(wy) - clientY);
         return Math.max(dx, dy);
     }
 }

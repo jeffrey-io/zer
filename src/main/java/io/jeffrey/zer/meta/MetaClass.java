@@ -37,7 +37,8 @@ public class MetaClass extends AbstractMapEditorItemRequirements {
     /**
      * inject the given packed metadata into the meta class data
      *
-     * @param data where we write the data out
+     * @param data
+     *            where we write the data out
      */
     public void inject(final ObjectDataMap data) {
         for (final String key : data.keys()) {

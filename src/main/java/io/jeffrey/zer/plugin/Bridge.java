@@ -62,7 +62,8 @@ public class Bridge extends ImporterTopLevel {
     /**
      * log the given thing _somewhere_
      *
-     * @param thing the thing we are going to log out to the console
+     * @param thing
+     *            the thing we are going to log out to the console
      */
     public void debug(final Object thing) {
         final Object json = NativeJSON.stringify(Context.getCurrentContext(), this, thing, NULL_CALLABLE, NULL_CALLABLE);

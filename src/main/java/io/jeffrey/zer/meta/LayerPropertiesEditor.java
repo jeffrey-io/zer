@@ -26,7 +26,7 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
 
     /**
      * construct the editor
-     * 
+     *
      * @param allLayers
      *            all the layers
      * @param currentLayerId

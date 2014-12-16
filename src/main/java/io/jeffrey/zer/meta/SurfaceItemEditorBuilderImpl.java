@@ -47,8 +47,7 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
         }
 
         /**
-         * add an element with a label and a value that spaces 3 columns
-         * {@inheritDoc}
+         * add an element with a label and a value that spaces 3 columns {@inheritDoc}
          */
         @Override
         public void add(final String label, final Edit value) {
@@ -61,8 +60,7 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
         }
 
         /**
-         * add an element with label, value, label, value for things like x,y coordinates
-         * {@inheritDoc}
+         * add an element with label, value, label, value for things like x,y coordinates {@inheritDoc}
          */
         @Override
         public void add(final String label0, final Edit value0, final String label1, final Edit value1) {
@@ -83,8 +81,7 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
         }
 
         /**
-         * add an element with two labels
-         * {@inheritDoc}
+         * add an element with two labels {@inheritDoc}
          */
         @Override
         public void add(final String label, final String value) {

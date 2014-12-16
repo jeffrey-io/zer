@@ -40,7 +40,7 @@ public class ActionBar implements Syncable {
      *            the various plugins that are loaded
      * @param syncable
      *            what to update once an action has been performed
-     * 
+     *
      */
     public ActionBar(final VBox vbox, final SurfaceData data, final Surface surface, final HashMap<String, Plugin> plugins, final Syncable syncable) {
         this.vbox = vbox;

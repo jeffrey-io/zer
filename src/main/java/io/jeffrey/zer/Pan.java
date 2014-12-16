@@ -51,7 +51,7 @@ public class Pan implements MouseInteraction {
      */
     @Override
     public void moved(final AdjustedMouseEvent event) {
-        camera.tX = ix + event.event.getX() - x;
-        camera.tY = iy + event.event.getY() - y;
+        camera.tX = ix + event.clientX - x;
+        camera.tY = iy + event.clientY - y;
     }
 }

@@ -13,10 +13,10 @@ import org.mozilla.javascript.Context;
  *
  */
 public class Plugin {
-    private final Model  model;
     private final Bridge bridge;
     public final File    file;
     private long         lastTime;
+    private final Model  model;
 
     /**
      *
@@ -28,7 +28,7 @@ public class Plugin {
      *             we were unable to load the plugin
      */
     public Plugin(final String filename, final Model model) throws Exception {
-        this.file = new File(filename);
+        file = new File(filename);
         this.model = model;
         bridge = new Bridge(model);
         reload();
@@ -78,7 +78,9 @@ public class Plugin {
 
     /**
      * ping the plugin to see if it needs to be updated
-     * @throws Exception we failed to reload the file
+     * 
+     * @throws Exception
+     *             we failed to reload the file
      * @return true if the plugin was updated
      */
     public boolean ping() throws Exception {

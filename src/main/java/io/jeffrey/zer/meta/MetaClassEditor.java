@@ -32,7 +32,7 @@ public class MetaClassEditor extends AbstractMapEditor<MetaClass> {
 
     /**
      * construct the editor
-     * 
+     *
      * @param allClasses
      *            all the classes
      * @param currentClassId

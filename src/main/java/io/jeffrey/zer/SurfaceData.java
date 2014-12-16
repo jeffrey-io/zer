@@ -162,7 +162,8 @@ public abstract class SurfaceData {
     /**
      * force the selection window over all the details
      *
-     * @param window the current selection window which just updated, so please select items based on it
+     * @param window
+     *            the current selection window which just updated, so please select items based on it
      */
     public abstract void updateSelectionWindow(SelectionWindow window);
 }

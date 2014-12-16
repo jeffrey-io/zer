@@ -21,7 +21,7 @@ public interface SurfaceItemEditorBuilder {
     public interface SurfaceFourColumnGrid {
         /**
          * add an element with a label and a value that spaces 3 columns
-         * 
+         *
          * @param label
          *            the label of the text box
          * @param value
@@ -31,7 +31,7 @@ public interface SurfaceItemEditorBuilder {
 
         /**
          * add an element with label, value, label, value for things like x,y coordinates
-         * 
+         *
          * @param label0
          *            the label of the first text box
          * @param value0
@@ -45,7 +45,7 @@ public interface SurfaceItemEditorBuilder {
 
         /**
          * add an element with two labels
-         * 
+         *
          * @param label
          *            the label of the text box
          * @param value
@@ -105,7 +105,7 @@ public interface SurfaceItemEditorBuilder {
      *            the data source
      * @return the current file
      */
-    public abstract String addFile(String title, String label, Edit link, FileSerializer normalize);
+    public abstract String addFile(String title, String label, Edit link, DocumentFileSystem normalize);
 
     /**
      * no longer use the border

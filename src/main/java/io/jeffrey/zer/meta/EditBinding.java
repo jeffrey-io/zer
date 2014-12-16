@@ -153,7 +153,7 @@ public class EditBinding {
      * @param normalize
      *            the method to normalize the file to a string
      */
-    public void bindFile(final String title, final Button button, final TextField ref, final Edit value, final FileSerializer normalize) {
+    public void bindFile(final String title, final Button button, final TextField ref, final Edit value, final DocumentFileSystem normalize) {
         try {
             building = true;
             button.setOnAction(new EventHandler<ActionEvent>() {
@@ -162,7 +162,7 @@ public class EditBinding {
                     final FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle(title);
                     final File file = fileChooser.showOpenDialog(null);
-                    final String newUri = normalize.normalilze(file);
+                    final String newUri = normalize.normalize(file);
                     ref.setText(newUri);
                     value.set(newUri);
                     syncable.sync();

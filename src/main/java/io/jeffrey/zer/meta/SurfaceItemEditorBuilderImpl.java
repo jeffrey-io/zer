@@ -176,7 +176,7 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
      * {@inheritDoc}
      */
     @Override
-    public String addFile(final String title, final String label, final Edit link, final FileSerializer normalize) {
+    public String addFile(final String title, final String label, final Edit link, final DocumentFileSystem normalize) {
         final GridPane pane = new GridPane();
 
         final Text labelX = new Text(label);

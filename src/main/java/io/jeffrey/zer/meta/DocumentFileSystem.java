@@ -7,7 +7,16 @@ import java.io.File;
  *
  * @author jeffrey
  */
-public interface FileSerializer {
+public interface DocumentFileSystem {
+
+    /**
+     * Convert the nice uri into a file on the disk
+     *
+     * @param path
+     *            the serialized and nice uri
+     * @return a File object
+     */
+    public File find(String path);
 
     /**
      * convert the given URI into a normalized uri
@@ -16,5 +25,5 @@ public interface FileSerializer {
      *            the uri to make relative
      * @return the relative URI
      */
-    public String normalilze(File input);
+    public String normalize(File input);
 }

@@ -1,5 +1,6 @@
 package io.jeffrey.zer;
 
+import java.io.File;
 import java.util.HashMap;
 
 import javafx.scene.image.Image;
@@ -42,7 +43,8 @@ public class ImageCache {
      *            the uri for the image
      * @return an image
      */
-    public synchronized Image of(final String uri) {
+    public synchronized Image of(final File file) {
+        final String uri = file.toURI().toString();
         Image img = images.get(uri);
         if (img == null) {
             img = new Image(uri);

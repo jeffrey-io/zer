@@ -146,6 +146,9 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
         rootBox.getChildren().clear();
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void addAction(final String label, final Runnable runnable) {
         final Button act = new Button(label);

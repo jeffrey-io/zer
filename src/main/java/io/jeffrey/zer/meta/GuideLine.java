@@ -11,8 +11,14 @@ import io.jeffrey.zer.edits.EditDouble;
  */
 public class GuideLine {
 
-    public static GuideLine fromString(final String v) {
-        final String[] parts = v.split(",");
+    /**
+     * parse a serialized guideline
+     * 
+     * @param serializedGuideLine
+     * @return null if invalid, otherwise a valid Guideline
+     */
+    public static GuideLine fromString(final String serializedGuideLine) {
+        final String[] parts = serializedGuideLine.split(",");
         if (parts.length != 4) {
             return null;
         }
@@ -27,22 +33,32 @@ public class GuideLine {
     public final EditDouble a;
     public final EditDouble b;
     public final EditDouble c;
-
     public final EditDouble distance;
 
-    // a x + b y = c
+    /** a x + b y = c */
     public GuideLine() {
         a = new EditDouble("a", 1.0);
         b = new EditDouble("b", 0.0);
-        c = new EditDouble("c", 1.0);
+        c = new EditDouble("c", 0.0);
         distance = new EditDouble("distance", 10.0);
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return a.value() + "," + b.value() + "," + c.value() + "," + distance.value();
     }
 
+    /**
+     * Write out two vectors that make a line segment
+     * 
+     * @param camera
+     *            the view port
+     * @param reg
+     *            where to write the vectors (0 and 1)
+     */
     public void writeSegment(final Camera camera, final VectorRegister2 reg) {
         if (Math.abs(a.value()) > 0) {
             double y = camera.projY(-10000);

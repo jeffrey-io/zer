@@ -1,5 +1,6 @@
 package io.jeffrey.zer;
 
+import io.jeffrey.zer.Notifications.Notification;
 import io.jeffrey.zer.meta.SurfaceItemEditor;
 import io.jeffrey.zer.plugin.Plugin;
 
@@ -17,6 +18,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -43,12 +45,28 @@ public class ZERStage {
         final Notifications notify = data.getNotifications();
         final BorderPane root = new BorderPane();
 
-        // TODO: link status to something... else
-        final Text status = new Text("TODO: put something useful here");
+        final Text status = new Text("");
+
+        notify.listen(new Runnable() {
+            @Override
+            public void run() {
+                Notification latest = notify.latest();
+                if (latest != null) {
+                    status.setText(latest.shortMessage);
+                }
+            }
+        });
+        
+        status.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent dontcare) {
+                // pop up window of events
+            }
+        });
 
         final Canvas canvas = new Canvas(300, 250);
         final Camera camera = data.getCamera();
-        final Surface surface = new Surface(canvas, data, status);
+        final Surface surface = new Surface(canvas, data);
 
         final VBox left = new VBox();
         final VBox right = new VBox();

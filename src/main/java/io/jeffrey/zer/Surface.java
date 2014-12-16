@@ -6,7 +6,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 
 /**
  * Defines high level interactions over a canvas and maps it directly to a GraphicsContext
@@ -22,7 +21,6 @@ public class Surface {
     public double                 cursor_x;
     public double                 cursor_y;
     private final SurfaceData     data;
-    private final Text            status;
     private final SelectionWindow window;
 
     /**
@@ -33,14 +31,13 @@ public class Surface {
      * @param status
      *            the textual status that we are free to update
      */
-    public Surface(final Canvas canvas, final SurfaceData data, final Text status) {
+    public Surface(final Canvas canvas, final SurfaceData data) {
         this.canvas = canvas;
         this.data = data;
         camera = data.getCamera();
         window = new SelectionWindow();
         cursor_x = 0;
         cursor_y = 0;
-        this.status = status;
     }
 
     private void drawGridLines(final double gridSize, final GraphicsContext gc) {
@@ -66,7 +63,7 @@ public class Surface {
     /**
      * draw the surface
      */
-    public void render() {
+    public double render() {
         final long start = System.nanoTime();
         final GraphicsContext gc = canvas.getGraphicsContext2D();
         gc.setFill(Color.WHITESMOKE);
@@ -119,8 +116,7 @@ public class Surface {
         }
         window.drawWindow(camera, gc);
         final long end = System.nanoTime();
-        final double seconds = (Math.abs(end - start) + 1) / 1_000_000_000.0;
-        status.setText("DRAW:" + 1.0 / seconds);
+        return (Math.abs(end - start) + 1) / 1_000_000_000.0;
     }
 
     public void resetCamera() {

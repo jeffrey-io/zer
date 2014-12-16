@@ -33,7 +33,7 @@ public class Bridge extends ImporterTopLevel {
         final Context context = Context.enter();
         try {
             initStandardObjects(context, false);
-            defineFunctionProperties(new String[] { "bridge", "debug" }, Bridge.class, ScriptableObject.DONTENUM);
+            defineFunctionProperties(new String[] { "bridge", "invoke", "debug" }, Bridge.class, ScriptableObject.DONTENUM);
             context.evaluateString(this, "var $ = bridge;", "bridge-connector", 0, null);
         } finally {
             Context.exit();
@@ -70,5 +70,19 @@ public class Bridge extends ImporterTopLevel {
         final String pretty = (String) json;
         // TODO: add a visual way of understanding what is happening with the, you know, thing
         System.out.println(pretty);
+    }
+
+    /**
+     * invoke a method on the given query
+     *
+     * @param query
+     *            the query
+     * @param method
+     *            the method to invoke
+     * @return a javascript object
+     */
+    public Object invoke(final String query, final String method) {
+        final String json = model.invokeAndReturnJson(query, method);
+        return NativeJSON.parse(Context.getCurrentContext(), this, json, NULL_CALLABLE);
     }
 }

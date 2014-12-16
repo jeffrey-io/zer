@@ -43,6 +43,15 @@ public interface Editable {
     public String id();
 
     /**
+     * perform an action against this editable thing
+     *
+     * @param action
+     *            the action to perform
+     * @return an object that can be serialized to JSON
+     */
+    public Object invoke(String action);
+
+    /**
      * @param key
      *            the name of the metadata
      * @param defaultValue
@@ -50,12 +59,4 @@ public interface Editable {
      * @return the edit link to the metadata
      */
     public Edit metadataOf(String key, String defaultValue);
-
-    /**
-     * perform an action against this editable thing
-     *
-     * @param action
-     *            the action to perform
-     */
-    public void perform(String action);
 }

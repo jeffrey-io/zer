@@ -28,6 +28,16 @@ public interface Model {
     public String getJson(String query);
 
     /**
+     * invoke the method and return json
+     * 
+     * @param query
+     *            what to operate on
+     * @param method
+     *            the method to invoke
+     */
+    public String invokeAndReturnJson(String query, String method);
+
+    /**
      * write a value to the given query
      *
      * @param query

@@ -3,6 +3,7 @@ package io.jeffrey.zer;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The place where all notifications/events and other interesting exceptions go; this could have been done with log4j, but I would rather have explicit control
@@ -12,52 +13,33 @@ import java.util.ArrayList;
  */
 public class Notifications {
 
+    /**
+     * a notification structure
+     *
+     * @author jeffrey
+     */
+    public static class Notification {
+        public final String longMessage;
+        public final String shortMessage;
+        public final long   timestamp;
+
+        public Notification(final String shortMessage, final String longMessage) {
+            timestamp = System.currentTimeMillis();
+            this.shortMessage = shortMessage;
+            this.longMessage = longMessage;
+        }
+    }
+
     private final ArrayList<Runnable>     events;
+
     private final ArrayList<Notification> history;
 
     /**
      * create an empty set of notifications
      */
     public Notifications() {
-        this.events = new ArrayList<>();
-        this.history = new ArrayList<Notifications.Notification>();
-    }
-
-    /**
-     * a notification structure
-     * 
-     * @author jeffrey
-     */
-    public static class Notification {
-        public final long   timestamp;
-        public final String shortMessage;
-        public final String longMessage;
-
-        public Notification(String shortMessage, String longMessage) {
-            this.timestamp = System.currentTimeMillis();
-            this.shortMessage = shortMessage;
-            this.longMessage = longMessage;
-        }
-    }
-
-    /**
-     * @return the latest notification
-     */
-    public Notification latest() {
-        if (history.size() == 0)
-            return null;
-        return history.get(history.size() - 1);
-    }
-
-    /**
-     * listen for new problems to happen
-     * 
-     * @param event
-     *            the runnable to run once something new happens
-     */
-    public void listen(final Runnable event) {
-        events.add(event);
-        event.run();
+        events = new ArrayList<>();
+        history = new ArrayList<Notifications.Notification>();
     }
 
     /**
@@ -70,13 +52,48 @@ public class Notifications {
     }
 
     /**
+     * @return the latest notification
+     */
+    public Notification latest() {
+        if (history.size() == 0) {
+            return null;
+        }
+        return history.get(history.size() - 1);
+    }
+
+    /**
+     * @param count
+     *            the number of notifications to return
+     * @return a list of notifications
+     */
+    public List<Notification> list(final int count) {
+        final ArrayList<Notification> result = new ArrayList<Notifications.Notification>();
+        final int start = Math.max(0, history.size() - count);
+        for (int k = start; k < history.size(); k++) {
+            result.add(history.get(k));
+        }
+        return result;
+    }
+
+    /**
+     * listen for new problems to happen
+     *
+     * @param event
+     *            the runnable to run once something new happens
+     */
+    public void listen(final Runnable event) {
+        events.add(event);
+        event.run();
+    }
+
+    /**
      * @param failure
      *            the exception we are interested in
      * @param parts
      *            the message being shared
      */
     public void println(final Exception failure, final String... parts) {
-        StringBuilder sb = new StringBuilder();
+        final StringBuilder sb = new StringBuilder();
         for (final String p : parts) {
             sb.append(p);
         }
@@ -88,14 +105,17 @@ public class Notifications {
         }
         if (failure != null) {
             longMessage += "\n--------------------------\n";
-            ByteArrayOutputStream mem = new ByteArrayOutputStream();
-            PrintWriter pw = new PrintWriter(mem);
+            final ByteArrayOutputStream mem = new ByteArrayOutputStream();
+            final PrintWriter pw = new PrintWriter(mem);
             failure.printStackTrace(pw);
             pw.flush();
             longMessage += new String(mem.toByteArray());
         }
-        Notification notification = new Notification(shortMessage, longMessage);
+        final Notification notification = new Notification(shortMessage, longMessage);
         history.add(notification);
+        if (history.size() > 100) {
+            history.remove(0);
+        }
         fire();
     }
 

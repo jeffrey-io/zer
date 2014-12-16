@@ -50,17 +50,17 @@ public class ZERStage {
         notify.listen(new Runnable() {
             @Override
             public void run() {
-                Notification latest = notify.latest();
+                final Notification latest = notify.latest();
                 if (latest != null) {
                     status.setText(latest.shortMessage);
                 }
             }
         });
-        
+
         status.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
-            public void handle(MouseEvent dontcare) {
-                // pop up window of events
+            public void handle(final MouseEvent dontcare) {
+                NotificationWindow.show(notify);
             }
         });
 

@@ -7,8 +7,19 @@ import javafx.scene.control.TitledPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+/**
+ * a window to render notifications
+ * 
+ * @author jeffrey
+ *
+ */
 public class NotificationWindow {
 
+    /**
+     * Show the current notifications
+     * 
+     * @param notifications the notifications to show
+     */
     public static void show(final Notifications notifications) {
         final Stage stage = new Stage();
         final VBox core = new VBox();

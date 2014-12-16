@@ -47,6 +47,26 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
         }
 
         /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void add(final Edit value0, final Edit value1, final Edit value2, final Edit value3) {
+            final TextField edit0 = new TextField();
+            binding.bindTextField(edit0, value0);
+            final TextField edit1 = new TextField();
+            binding.bindTextField(edit1, value1);
+            final TextField edit2 = new TextField();
+            binding.bindTextField(edit2, value2);
+            final TextField edit3 = new TextField();
+            binding.bindTextField(edit3, value3);
+            grid.add(edit0, 0, row);
+            grid.add(edit1, 1, row);
+            grid.add(edit2, 2, row);
+            grid.add(edit3, 3, row);
+            row++;
+        }
+
+        /**
          * add an element with a label and a value that spaces 3 columns {@inheritDoc}
          */
         @Override
@@ -93,6 +113,18 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
             row++;
         }
 
+        /**
+         * {@inheritDoc}
+         */
+        @Override
+        public void add(final String label0, final String label1, final String label2, final String label3) {
+            grid.add(new Text(label0), 0, row);
+            grid.add(new Text(label1), 1, row);
+            grid.add(new Text(label2), 2, row);
+            grid.add(new Text(label3), 3, row);
+            row++;
+        }
+
     }
 
     private static final int  PAD = 2;
@@ -112,6 +144,20 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
         currentBox = rootBox;
         this.binding = binding;
         rootBox.getChildren().clear();
+    }
+
+    @Override
+    public void addAction(final String label, final Runnable runnable) {
+        final Button act = new Button(label);
+        act.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(final ActionEvent arg0) {
+                runnable.run();
+                binding.forceSync();
+            }
+        });
+        currentBox.getChildren().add(act);
     }
 
     /**
@@ -159,7 +205,7 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
                 @Override
                 public void handle(final ActionEvent arg0) {
                     try {
-                        clazz.getConstructors()[0].newInstance(values, link.getAsText(), parent);
+                        clazz.getConstructors()[0].newInstance(values, link.getAsText(), parent, binding.notifications);
                     } catch (final Exception failure) {
                         binding.notifications.println(failure, "unable to create new instance of the editor");
                     }

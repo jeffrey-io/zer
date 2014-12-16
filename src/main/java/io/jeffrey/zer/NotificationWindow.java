@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 
 /**
  * a window to render notifications
- * 
+ *
  * @author jeffrey
  *
  */
@@ -17,8 +17,9 @@ public class NotificationWindow {
 
     /**
      * Show the current notifications
-     * 
-     * @param notifications the notifications to show
+     *
+     * @param notifications
+     *            the notifications to show
      */
     public static void show(final Notifications notifications) {
         final Stage stage = new Stage();

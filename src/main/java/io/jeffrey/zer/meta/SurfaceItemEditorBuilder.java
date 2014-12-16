@@ -20,6 +20,20 @@ public interface SurfaceItemEditorBuilder {
      */
     public interface SurfaceFourColumnGrid {
         /**
+         * add four edit columns
+         *
+         * @param value0
+         *            the value of the first text field
+         * @param value1
+         *            the value of the second text field
+         * @param value2
+         *            the value of the third text field
+         * @param value3
+         *            the value of the fourth text field
+         */
+        public void add(final Edit value0, final Edit value1, final Edit value2, final Edit value3);
+
+        /**
          * add an element with a label and a value that spaces 3 columns
          *
          * @param label
@@ -52,7 +66,31 @@ public interface SurfaceItemEditorBuilder {
          *            the faux value of the text box
          */
         public void add(final String label, final String value);
+
+        /**
+         * add columns
+         *
+         * @param label0
+         *            the first label
+         * @param label1
+         *            the second label
+         * @param label2
+         *            the third label
+         * @param label3
+         *            the fourth label
+         */
+        public void add(final String label0, final String label1, final String label2, final String label3);
     }
+
+    /**
+     * add a button
+     *
+     * @param label
+     *            the label of the button
+     * @param runnable
+     *            the action to run when the button is clicked
+     */
+    public abstract void addAction(String label, Runnable runnable);
 
     /**
      * add a checkbox

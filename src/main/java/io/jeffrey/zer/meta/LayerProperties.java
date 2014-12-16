@@ -6,8 +6,10 @@ import io.jeffrey.zer.edits.EditDouble;
 import io.jeffrey.zer.edits.EditInteger;
 import io.jeffrey.zer.edits.ObjectDataMap;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * defines the properties of the layer
@@ -25,27 +27,32 @@ public class LayerProperties extends AbstractMapEditorItemRequirements {
     /**
      * the layer's major grid
      */
-    public final EditDouble  gridMajor;
+    public final EditDouble           gridMajor;
 
     /**
      * the layer's minor grid
      */
-    public final EditDouble  gridMinor;
+    public final EditDouble           gridMinor;
+
+    /**
+     * guide lines
+     */
+    public final ArrayList<GuideLine> guides;
 
     /**
      * snap to the major grid
      */
-    public final EditBoolean snapMajor;
+    public final EditBoolean          snapMajor;
 
     /**
      * snap to the minor grid
      */
-    public final EditBoolean snapMinor;
+    public final EditBoolean          snapMinor;
 
     /**
      * the zorder of the layer
      */
-    public final EditInteger zorder;
+    public final EditInteger          zorder;
 
     /**
      * @param id
@@ -60,6 +67,7 @@ public class LayerProperties extends AbstractMapEditorItemRequirements {
         gridMinor = new EditDouble("minor", 1.0);
         snapMajor = new EditBoolean("snap-major", false);
         snapMinor = new EditBoolean("snap-minor", true);
+        guides = new ArrayList<>();
     }
 
     /**
@@ -70,6 +78,16 @@ public class LayerProperties extends AbstractMapEditorItemRequirements {
         for (final Edit ed : new Edit[] { zorder, gridMajor, gridMinor, snapMajor, snapMinor }) {
             packed.put(ed.name(), ed.getAsText());
         }
+        final StringBuilder packedGuides = new StringBuilder();
+        boolean first = true;
+        for (final GuideLine guide : guides) {
+            if (!first) {
+                packedGuides.append("|");
+            }
+            first = false;
+            packedGuides.append(guide.toString());
+        }
+        packed.put("guides", packedGuides.toString());
         packed.put("name", name());
         return packed;
     }
@@ -112,6 +130,14 @@ public class LayerProperties extends AbstractMapEditorItemRequirements {
         gridMinor.setByText(map.getDouble("minor", gridMinor.value()).getAsText());
         snapMajor.setByText(map.getBoolean("snap-major", snapMajor.value()).getAsText());
         snapMinor.setByText(map.getBoolean("snap-minor", snapMinor.value()).getAsText());
+        final String[] packedGuides = map.getString("guides", "").value().split(Pattern.quote("|"));
+        guides.clear();
+        for (final String packedGuide : packedGuides) {
+            final GuideLine gl = GuideLine.fromString(packedGuide);
+            if (gl != null) {
+                guides.add(gl);
+            }
+        }
     }
 
 }

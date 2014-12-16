@@ -1,5 +1,6 @@
 package io.jeffrey.zer.meta;
 
+import io.jeffrey.zer.Notifications;
 import io.jeffrey.zer.Syncable;
 
 import java.util.Map;
@@ -40,7 +41,7 @@ public class MetaClassEditor extends AbstractMapEditor<MetaClass> {
      * @param parent
      *            the parent that needs to be notified when the value has been updated
      */
-    public MetaClassEditor(final Map<String, MetaClass> allClasses, final String currentClassId, final Syncable parent) {
+    public MetaClassEditor(final Map<String, MetaClass> allClasses, final String currentClassId, final Syncable parent, final Notifications notify) {
         super(allClasses, currentClassId, parent);
 
         updateBody();

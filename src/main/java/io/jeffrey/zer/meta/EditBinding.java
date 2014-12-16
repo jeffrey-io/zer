@@ -256,6 +256,13 @@ public class EditBinding {
     }
 
     /**
+     * force a sync
+     */
+    public void forceSync() {
+        syncable.sync();
+    }
+
+    /**
      * denote that the focus will not be acquired
      */
     public void resetFocus() {

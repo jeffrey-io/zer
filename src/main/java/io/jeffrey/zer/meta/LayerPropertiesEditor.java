@@ -2,7 +2,9 @@ package io.jeffrey.zer.meta;
 
 import io.jeffrey.zer.Notifications;
 import io.jeffrey.zer.Syncable;
+import io.jeffrey.zer.meta.SurfaceItemEditorBuilder.SurfaceFourColumnGrid;
 
+import java.util.Iterator;
 import java.util.Map;
 
 import javafx.geometry.Insets;
@@ -125,6 +127,30 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
         builder.startBorder("Snapping");
         builder.addBoolean("Snap Major", current.snapMajor);
         builder.addBoolean("Snap Minor", current.snapMinor);
+        builder.endBorder();
+
+        builder.startBorder("Guide Lines");
+        final SurfaceFourColumnGrid grid = builder.startFourColumnGrid();
+
+        grid.add("a", "b", "c", "distance");
+        final Iterator<GuideLine> it = current.guides.iterator();
+        while (it.hasNext()) {
+            final GuideLine gl = it.next();
+            if (Math.abs(gl.a.value()) > 0 || Math.abs(gl.b.value()) > 0) {
+                grid.add(gl.a, gl.b, gl.c, gl.distance);
+            } else {
+                it.remove();
+            }
+        }
+
+        builder.addAction("New", new Runnable() {
+            @Override
+            public void run() {
+                current.guides.add(new GuideLine());
+                updateBody();
+            }
+        });
+
         builder.endBorder();
 
         tempBinding.focus();

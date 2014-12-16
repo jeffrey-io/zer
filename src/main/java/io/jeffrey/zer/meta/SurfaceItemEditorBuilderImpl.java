@@ -160,7 +160,8 @@ public class SurfaceItemEditorBuilderImpl implements SurfaceItemEditorBuilder {
                 public void handle(final ActionEvent arg0) {
                     try {
                         clazz.getConstructors()[0].newInstance(values, link.getAsText(), parent);
-                    } catch (final Exception e) {
+                    } catch (final Exception failure) {
+                        binding.notifications.println(failure, "unable to create new instance of the editor");
                     }
                 }
             });

@@ -5,6 +5,8 @@ import io.jeffrey.zer.plugin.Plugin;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -38,6 +40,7 @@ public class ZERStage {
      *            the actual window
      */
     public ZERStage(final SurfaceData data, final Stage stage) {
+        final Notifications notify = data.getNotifications();
         final BorderPane root = new BorderPane();
 
         // TODO: link status to something... else
@@ -62,14 +65,15 @@ public class ZERStage {
             for (final File file : pluginRoot.listFiles()) {
                 if (file.getName().endsWith(".js")) {
                     try {
-                        plugins.put(file.getName(), new Plugin(file.getPath(), data.getModel()));
-                    } catch (final Exception err) {
-                        // notify user
+                        notify.println("loading plugin:", file.toString());
+                        plugins.put(file.getName(), new Plugin(file.getPath(), data.getModel(), notify));
+                    } catch (final Exception failure) {
+                        notify.println(failure, "unable to load:", file.toString());
                     }
                 }
             }
         } else {
-            // notify user
+            notify.println("plug in directory '", pluginRoot.toString(), "' does not exist");
         }
 
         // when plugins changed, we integrate the changes
@@ -77,17 +81,40 @@ public class ZERStage {
             @Override
             public void handle(final ActionEvent dontcare) {
                 boolean updated = false;
-                for (final Plugin plugin : plugins.values()) {
+                final HashSet<String> toAxe = new HashSet<String>();
+                for (final Entry<String, Plugin> entry : plugins.entrySet()) {
+                    final Plugin plugin = entry.getValue();
                     try {
                         if (plugin.ping()) {
                             updated = true;
                         }
-                    } catch (final Exception e) {
-                        // TODO: notify, or remove the plugin
+                    } catch (final Exception failure) {
+                        notify.println(failure, "unable to ping plugin: ", entry.getKey());
+                        toAxe.add(entry.getKey());
+                    }
+                    if (!plugin.exists()) {
+                        toAxe.add(entry.getKey());
+                    }
+                }
+                for (final String ax : toAxe) {
+                    plugins.remove(ax);
+                }
+                if (pluginRoot.exists() && pluginRoot.isDirectory()) {
+                    for (final File file : pluginRoot.listFiles()) {
+                        if (file.getName().endsWith(".js")) {
+                            if (!plugins.containsKey(file.getName())) {
+                                try {
+                                    notify.println("loading plugin:", file.toString());
+                                    plugins.put(file.getName(), new Plugin(file.getPath(), data.getModel(), notify));
+                                    updated = true;
+                                } catch (final Exception failure) {
+                                    notify.println(failure, "unable to load:", file.toString());
+                                }
+                            }
+                        }
                     }
                 }
                 if (updated) {
-                    // notify that plugins have been re-loaded
                     menuSync.sync();
                 }
             }
@@ -95,13 +122,13 @@ public class ZERStage {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        final SurfaceItemEditor editor = new SurfaceItemEditor(left, data, surface, syncs);
+        final SurfaceItemEditor editor = new SurfaceItemEditor(left, data, surface, syncs, notify);
         final ActionBar actions = new ActionBar(right, data, surface, plugins, syncs);
         syncs.add(editor);
         syncs.add(actions);
         syncs.add(menuSync);
 
-        root.setTop(SurfaceLinkageToStage.createLinkedMenuBar(surface, data, stage, syncs, menuSync, plugins));
+        root.setTop(SurfaceLinkageToStage.createLinkedMenuBar(surface, data, stage, syncs, menuSync, plugins, notify));
 
         final Pane center = new Pane();
         root.setCenter(center);

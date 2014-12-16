@@ -1,6 +1,7 @@
 package io.jeffrey.zer.meta;
 
 import io.jeffrey.zer.Editable;
+import io.jeffrey.zer.Notifications;
 import io.jeffrey.zer.Surface;
 import io.jeffrey.zer.SurfaceData;
 import io.jeffrey.zer.Syncable;
@@ -31,7 +32,7 @@ public class SurfaceItemEditor implements Syncable {
      * @param syncable
      *            how we update other views
      */
-    public SurfaceItemEditor(final VBox vbox, final SurfaceData data, final Surface surface, final Syncable syncable) {
+    public SurfaceItemEditor(final VBox vbox, final SurfaceData data, final Surface surface, final Syncable syncable, final Notifications notify) {
         this.vbox = vbox;
         this.data = data;
         this.surface = surface;
@@ -42,7 +43,7 @@ public class SurfaceItemEditor implements Syncable {
             public void sync() {
                 refresh();
             }
-        });
+        }, notify);
 
     }
 

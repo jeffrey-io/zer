@@ -1,5 +1,7 @@
 package io.jeffrey.zer.plugin;
 
+import io.jeffrey.zer.Notifications;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -17,13 +19,13 @@ public class Plugin {
         Document, Item, Unknown
     }
 
-    private Bridge      bridge;
-    public final File   file;
-    private long        lastTime;
+    private Bridge              bridge;
+    public final File           file;
+    private long                lastTime;
 
-    private final Model model;
-
-    private Type        type;
+    private final Model         model;
+    private final Notifications notify;
+    private Type                type;
 
     /**
      *
@@ -34,9 +36,10 @@ public class Plugin {
      * @throws Exception
      *             we were unable to load the plugin
      */
-    public Plugin(final String filename, final Model model) throws Exception {
+    public Plugin(final String filename, final Model model, final Notifications notify) throws Exception {
         file = new File(filename);
         this.model = model;
+        this.notify = notify;
         reload();
     }
 
@@ -54,10 +57,16 @@ public class Plugin {
         model.begin();
         try {
             context.evaluateString(bridge, "evaluate(\"" + id + "\");", "evaluate." + id, 0, null);
+        } catch (final Exception failure) {
+            notify.println(failure, "failed to evaluate on ", id, " plugin:", file.toString());
         } finally {
             model.end();
             Context.exit();
         }
+    }
+
+    public boolean exists() {
+        return file.exists();
     }
 
     /**
@@ -89,6 +98,9 @@ public class Plugin {
                 return (Boolean) result;
             }
             return false;
+        } catch (final Exception failure) {
+            notify.println(failure, "failed to check availability on ", id, " plugin:", file.toString());
+            return false;
         } finally {
             model.end();
             Context.exit();
@@ -106,6 +118,8 @@ public class Plugin {
         model.begin();
         try {
             context.evaluateString(bridge, "main()", "main", 0, null);
+        } catch (final Exception failure) {
+            notify.println(failure, "failed to perform main(); plugin:", file.toString());
         } finally {
             model.end();
             Context.exit();
@@ -142,6 +156,8 @@ public class Plugin {
             } else if (bridge.has("main", null)) {
                 type = Type.Document;
             }
+        } catch (final Exception failure) {
+            notify.println(failure, "failed to reload ", file.toString());
         } finally {
             Context.exit();
         }

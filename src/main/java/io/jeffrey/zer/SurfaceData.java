@@ -33,7 +33,7 @@ public abstract class SurfaceData {
      * @param file
      *            the file that we should open
      */
-    public abstract void actionOpen(File file);;
+    public abstract void actionOpen(File file);
 
     /**
      * add something
@@ -112,6 +112,14 @@ public abstract class SurfaceData {
      * @return a model for scripts to manipulate the data
      */
     public abstract Model getModel();
+
+    /**
+     * link notifications
+     *
+     * @param notify
+     *            where notifications should be routed
+     */
+    public abstract Notifications getNotifications();
 
     /**
      * @return where to look for plugins

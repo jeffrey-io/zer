@@ -1,5 +1,6 @@
 package io.jeffrey.zer.meta;
 
+import io.jeffrey.zer.Notifications;
 import io.jeffrey.zer.Syncable;
 import io.jeffrey.zer.edits.Edit;
 
@@ -27,20 +28,27 @@ import javafx.stage.FileChooser;
  * @author jeffrey
  */
 public class EditBinding {
-    private boolean        building;
-    private String         focusOn    = null;
-    final Pane             root;
-    private final Syncable syncable;
-    private Node           toSetFocus = null;
+    private boolean            building;
+    private String             focusOn    = null;
+    public final Notifications notifications;
+    final Pane                 root;
+    private final Syncable     syncable;
+    private Node               toSetFocus = null;
 
     /**
+     * @param root
+     *            the parent pane to utilize
      * @param syncable
      *            the thing that gets updated when a value changes
+     * @param notify
+     *            what to tell when things head south
+     *
      */
-    public EditBinding(final Pane root, final Syncable syncable) {
+    public EditBinding(final Pane root, final Syncable syncable, final Notifications notify) {
         this.root = root;
         this.syncable = syncable;
         building = false;
+        notifications = notify;
     }
 
     /**
@@ -85,7 +93,8 @@ public class EditBinding {
             Color color = Color.BLACK;
             try {
                 color = Color.valueOf(value.getAsText());
-            } catch (final Exception err) {
+            } catch (final Exception failure) {
+                notifications.println(failure, "unable to parse color:" + value.getAsText());
             }
 
             colorPicker.setValue(color);

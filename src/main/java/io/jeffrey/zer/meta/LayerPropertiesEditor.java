@@ -1,5 +1,6 @@
 package io.jeffrey.zer.meta;
 
+import io.jeffrey.zer.Notifications;
 import io.jeffrey.zer.Syncable;
 
 import java.util.Map;
@@ -34,7 +35,7 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
      * @param parent
      *            the parent that needs to be notified when the value has been updated
      */
-    public LayerPropertiesEditor(final Map<String, LayerProperties> allLayers, final String currentLayerId, final Syncable parent) {
+    public LayerPropertiesEditor(final Map<String, LayerProperties> allLayers, final String currentLayerId, final Syncable parent, final Notifications notify) {
         super(allLayers, currentLayerId, parent);
 
         binding = new EditBinding(core, new Syncable() {
@@ -42,7 +43,7 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
             public void sync() {
                 checkAndOfficiate();
             }
-        });
+        }, notify);
         updateBody();
         syncSelector();
 
@@ -110,8 +111,8 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
 
         parts.getChildren().clear();
 
-        final EditBinding binding = new EditBinding(parts, this);
-        final SurfaceItemEditorBuilderImpl builder = new SurfaceItemEditorBuilderImpl(parts, binding);
+        final EditBinding tempBinding = new EditBinding(parts, this, binding.notifications);
+        final SurfaceItemEditorBuilderImpl builder = new SurfaceItemEditorBuilderImpl(parts, tempBinding);
 
         builder.startBorder("Ordering");
         builder.startFourColumnGrid().add("Z Order", current.zorder);
@@ -126,6 +127,6 @@ public class LayerPropertiesEditor extends AbstractMapEditor<LayerProperties> {
         builder.addBoolean("Snap Minor", current.snapMinor);
         builder.endBorder();
 
-        binding.focus();
+        tempBinding.focus();
     }
 }

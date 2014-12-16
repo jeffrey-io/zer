@@ -29,7 +29,7 @@ public interface Model {
 
     /**
      * invoke the method and return json
-     * 
+     *
      * @param query
      *            what to operate on
      * @param method

@@ -33,7 +33,7 @@ import javafx.stage.Stage;
  */
 public class SurfaceLinkageToStage {
 
-    private static MenuItem actionOf(final String label, final SurfaceAction action, final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync) {
+    private static MenuItem actionOf(final String label, final SurfaceAction action, final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync, final Notifications notify) {
         final MenuItem item = new MenuItem(label);
         item.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -41,9 +41,8 @@ public class SurfaceLinkageToStage {
             public void handle(final ActionEvent evt) {
                 try {
                     data.execute(action, surface.cursor_x, surface.cursor_y);
-                } catch (final Exception e) {
-                    // TODO: show window
-                    e.printStackTrace();
+                } catch (final Exception failure) {
+                    notify.println(failure, "unable to perform ", label, " at ", surface.cursor_x + "," + surface.cursor_y);
                 }
                 syncable.sync();
                 surface.render();
@@ -67,9 +66,11 @@ public class SurfaceLinkageToStage {
      *            collection of things that need to be updated when events occur
      * @param plugins
      *            the plugins available
+     * @param notify
+     *            where to log out of band failure messages
      * @return a VBox that contains the menu
      */
-    public static VBox createLinkedMenuBar(final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync, final Map<String, Plugin> plugins) {
+    public static VBox createLinkedMenuBar(final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync, final Map<String, Plugin> plugins, final Notifications notify) {
         final VBox top = new VBox();
         final MenuBar menuBar = new MenuBar();
         final Menu top_file = new Menu("File");
@@ -81,16 +82,16 @@ public class SurfaceLinkageToStage {
 
         final Menu top_edit = new Menu("Edit");
 
-        final MenuItem _del = actionOf("Delete", SurfaceAction.DeleteSelection, surface, data, stage, syncable, menuSync);
+        final MenuItem _del = actionOf("Delete", SurfaceAction.DeleteSelection, surface, data, stage, syncable, menuSync, notify);
 
-        final MenuItem _all = actionOf("Select All", SurfaceAction.SelectAll, surface, data, stage, syncable, menuSync);
-        final MenuItem _inv = actionOf("Inverse Selection", SurfaceAction.InverseSelection, surface, data, stage, syncable, menuSync);
+        final MenuItem _all = actionOf("Select All", SurfaceAction.SelectAll, surface, data, stage, syncable, menuSync, notify);
+        final MenuItem _inv = actionOf("Inverse Selection", SurfaceAction.InverseSelection, surface, data, stage, syncable, menuSync, notify);
 
-        final MenuItem _copy = actionOf("Copy", SurfaceAction.Copy, surface, data, stage, syncable, menuSync);
-        final MenuItem _cut = actionOf("Cut", SurfaceAction.Cut, surface, data, stage, syncable, menuSync);
-        final MenuItem _paste = actionOf("Paste", SurfaceAction.Paste, surface, data, stage, syncable, menuSync);
-        final MenuItem _undo = actionOf("Undo", SurfaceAction.Undo, surface, data, stage, syncable, menuSync);
-        final MenuItem _redo = actionOf("Redo", SurfaceAction.Redo, surface, data, stage, syncable, menuSync);
+        final MenuItem _copy = actionOf("Copy", SurfaceAction.Copy, surface, data, stage, syncable, menuSync, notify);
+        final MenuItem _cut = actionOf("Cut", SurfaceAction.Cut, surface, data, stage, syncable, menuSync, notify);
+        final MenuItem _paste = actionOf("Paste", SurfaceAction.Paste, surface, data, stage, syncable, menuSync, notify);
+        final MenuItem _undo = actionOf("Undo", SurfaceAction.Undo, surface, data, stage, syncable, menuSync, notify);
+        final MenuItem _redo = actionOf("Redo", SurfaceAction.Redo, surface, data, stage, syncable, menuSync, notify);
 
         _del.setAccelerator(new KeyCodeCombination(KeyCode.DELETE));
 
@@ -143,8 +144,8 @@ public class SurfaceLinkageToStage {
             public void handle(final ActionEvent arg0) {
                 try {
                     data.execute(SurfaceAction.NewFile, surface.cursor_x, surface.cursor_y);
-                } catch (final Exception e) {
-                    e.printStackTrace();
+                } catch (final Exception failure) {
+                    notify.println(failure, "unable to create new file");
                 }
             }
         });
@@ -177,12 +178,12 @@ public class SurfaceLinkageToStage {
                     try {
                         data.execute(SurfaceAction.Save, surface.cursor_x, surface.cursor_y);
                         stage.setTitle(data.getTitle());
-                    } catch (final Exception e) {
-                        // TODO: log somewhere better
+                    } catch (final Exception failure) {
+                        notify.println(failure, "unable to save as:" + file.toString());
                     }
                     return;
                 } else {
-                    // TODO: show error message
+                    notify.println("unable to save as:" + file.toString());
                 }
             }
         };
@@ -197,8 +198,8 @@ public class SurfaceLinkageToStage {
                     try {
                         data.execute(SurfaceAction.Save, surface.cursor_x, surface.cursor_y);
                         stage.setTitle(data.getTitle());
-                    } catch (final Exception e) {
-                        e.printStackTrace();
+                    } catch (final Exception failure) {
+                        notify.println(failure, "unable to save");
                     }
                 }
             }

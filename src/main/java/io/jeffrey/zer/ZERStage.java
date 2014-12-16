@@ -76,12 +76,19 @@ public class ZERStage {
         final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent dontcare) {
+                boolean updated = false;
                 for (final Plugin plugin : plugins.values()) {
                     try {
-                        plugin.ping();
+                        if (plugin.ping()) {
+                            updated = true;
+                        }
                     } catch (final Exception e) {
                         // TODO: notify, or remove the plugin
                     }
+                }
+                if (updated) {
+                    // notify that plugins have been re-loaded
+                    menuSync.sync();
                 }
             }
         }));
@@ -94,7 +101,7 @@ public class ZERStage {
         syncs.add(actions);
         syncs.add(menuSync);
 
-        root.setTop(SurfaceLinkageToStage.createLinkedMenuBar(surface, data, stage, syncs, menuSync));
+        root.setTop(SurfaceLinkageToStage.createLinkedMenuBar(surface, data, stage, syncs, menuSync, plugins));
 
         final Pane center = new Pane();
         root.setCenter(center);

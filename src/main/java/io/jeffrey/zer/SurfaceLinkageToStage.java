@@ -1,9 +1,13 @@
 package io.jeffrey.zer;
 
 import io.jeffrey.zer.SurfaceData.SurfaceAction;
+import io.jeffrey.zer.plugin.Plugin;
+import io.jeffrey.zer.plugin.Plugin.Type;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,7 +15,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.control.ToolBar;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
@@ -19,7 +22,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -63,9 +65,11 @@ public class SurfaceLinkageToStage {
      *            consumers that need to be notified when we do something
      * @param menuSync
      *            collection of things that need to be updated when events occur
+     * @param plugins
+     *            the plugins available
      * @return a VBox that contains the menu
      */
-    public static VBox createLinkedMenuBar(final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync) {
+    public static VBox createLinkedMenuBar(final Surface surface, final SurfaceData data, final Stage stage, final Syncable syncable, final SyncableSet menuSync, final Map<String, Plugin> plugins) {
         final VBox top = new VBox();
         final MenuBar menuBar = new MenuBar();
         final Menu top_file = new Menu("File");
@@ -118,6 +122,8 @@ public class SurfaceLinkageToStage {
         });
 
         top_edit.getItems().addAll(_del, _all, _inv, _copy, _cut, _paste, _undo, _redo);
+
+        final Menu top_plugins = new Menu("Plugins");
 
         final Menu top_view = new Menu("View");
         final MenuItem _reset_camera = new MenuItem("Reset Camera");
@@ -211,27 +217,32 @@ public class SurfaceLinkageToStage {
         top_file.getItems().addAll(_new, _open, _save, _saveAs, _close);
         top_view.getItems().addAll(_reset_camera);
 
-        final MenuItem tb = new MenuItem("tb");
-
-        final ToolBar tba = new ToolBar(new Text("foo"));
-
-        menuBar.getMenus().addAll(top_file, top_edit, top_view);
-
-        top.getChildren().add(menuBar);
-
-        tb.setOnAction(new EventHandler<ActionEvent>() {
+        menuSync.add(new Syncable() {
 
             @Override
-            public void handle(final ActionEvent arg0) {
-                if (top.getChildren().contains(tba)) {
-                    top.getChildren().remove(tba);
-
-                } else {
-                    top.getChildren().add(tba);
+            public void sync() {
+                top_plugins.getItems().clear();
+                for (final Entry<String, Plugin> entry : plugins.entrySet()) {
+                    if (entry.getValue().getType() == Type.Document) {
+                        final MenuItem pluginItem = new MenuItem(entry.getKey());
+                        pluginItem.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(final ActionEvent arg0) {
+                                entry.getValue().perform();
+                                syncable.sync();
+                                surface.render();
+                            }
+                        });
+                        top_plugins.getItems().add(pluginItem);
+                    }
                 }
 
             }
         });
+
+        menuBar.getMenus().addAll(top_file, top_edit, top_plugins, top_view);
+
+        top.getChildren().add(menuBar);
         return top;
     }
 

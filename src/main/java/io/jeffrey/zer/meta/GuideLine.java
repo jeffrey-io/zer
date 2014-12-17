@@ -13,7 +13,7 @@ public class GuideLine {
 
     /**
      * parse a serialized guideline
-     * 
+     *
      * @param serializedGuideLine
      * @return null if invalid, otherwise a valid Guideline
      */
@@ -53,7 +53,7 @@ public class GuideLine {
 
     /**
      * Write out two vectors that make a line segment
-     * 
+     *
      * @param camera
      *            the view port
      * @param reg

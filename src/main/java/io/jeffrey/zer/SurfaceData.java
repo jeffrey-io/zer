@@ -55,6 +55,11 @@ public abstract class SurfaceData {
     public abstract boolean available(SurfaceAction action);
 
     /**
+     * indicate that we have finished doing some work on the editables
+     */
+    public abstract void capture();
+
+    /**
      * draw the surface
      *
      * @param gc
@@ -148,6 +153,11 @@ public abstract class SurfaceData {
      * @return true if the point lies in a selection region
      */
     public abstract boolean isInSelectionSet(final AdjustedMouseEvent event);
+
+    /**
+     * indicate that we are about to do work on the stuff
+     */
+    public abstract void ready();
 
     /**
      * grant the surface a file

@@ -128,9 +128,11 @@ public class ActionBar implements Syncable {
                     button.setOnAction(new EventHandler<ActionEvent>() {
                         @Override
                         public void handle(final ActionEvent arg0) {
+                            data.ready();
                             for (final Editable editable : edits) {
                                 editable.invoke(action);
                             }
+                            data.capture();
                             surface.render();
                             syncable.sync();
                         }
@@ -165,7 +167,9 @@ public class ActionBar implements Syncable {
                 button.setOnAction(new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(final ActionEvent arg0) {
+                        data.ready();
                         editable.invoke(action);
+                        data.capture();
                         surface.render();
                         syncable.sync();
                     }

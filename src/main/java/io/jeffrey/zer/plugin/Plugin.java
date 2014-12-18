@@ -88,7 +88,6 @@ public class Plugin {
             return false;
         }
         final Context context = Context.enter();
-        model.begin();
         try {
             final Object result = context.evaluateString(bridge, "available(\"" + id + "\");", "avail." + id, 0, null);
             if (result == null) {
@@ -102,7 +101,6 @@ public class Plugin {
             notify.println(failure, "failed to check availability on ", id, " plugin:", file.toString());
             return false;
         } finally {
-            model.end();
             Context.exit();
         }
     }

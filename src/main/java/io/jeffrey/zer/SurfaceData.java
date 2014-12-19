@@ -175,7 +175,7 @@ public abstract class SurfaceData {
      *            the mouse event that has been transformed into the surface's world space
      * @return a mouse interaction
      */
-    public abstract MouseInteraction startSurfaceInteraction(final AdjustedMouseEvent event);
+    public abstract MouseInteraction startSurfaceInteraction(final AdjustedMouseEvent event, double width, double height);
 
     /**
      * force the selection window over all the details

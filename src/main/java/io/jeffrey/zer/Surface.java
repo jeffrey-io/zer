@@ -110,7 +110,7 @@ public class Surface {
 
         gc.save();
         try {
-            data.draw(gc, camera);
+            data.draw(gc, camera, canvas.getWidth(), canvas.getHeight());
         } finally {
             gc.restore();
         }

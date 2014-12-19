@@ -67,7 +67,7 @@ public abstract class SurfaceData {
      * @param camera
      *            the camera of the viewport
      */
-    public abstract void draw(GraphicsContext gc, Camera camera);
+    public abstract void draw(GraphicsContext gc, Camera camera, double width, double height);
 
     /**
      * Execute the given action that has no arguments

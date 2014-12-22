@@ -44,7 +44,7 @@ public class ActionBar implements Syncable {
 	 *            what to update once an action has been performed
 	 *
 	 */
-	public ActionBar(final VBox vbox, final SurfaceData data,
+	public ActionBar(final EditableSelect selector, final VBox vbox, final SurfaceData data,
 			final Surface surface, final HashMap<String, Plugin> plugins,
 			final Syncable syncable) {
 		this.vbox = vbox;
@@ -52,7 +52,7 @@ public class ActionBar implements Syncable {
 		this.surface = surface;
 		this.plugins = plugins;
 		this.syncable = syncable;
-		this.selector = new EditableSelect(this);
+		this.selector = selector;
 	}
 
 	private void syncCommon(final Set<Editable> edits) {
@@ -192,7 +192,7 @@ public class ActionBar implements Syncable {
 		final Set<Editable> edits = data.getEditables();
 		vbox.getChildren().clear();
 
-		vbox.getChildren().add(selector.create(edits));
+		vbox.getChildren().add(selector.create());
 		
 		Editable current = selector.current();
 		if (edits.size() == 0) {

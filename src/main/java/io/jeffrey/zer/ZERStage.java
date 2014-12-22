@@ -47,6 +47,8 @@ public class ZERStage {
         final Notifications notify = data.getNotifications();
         final BorderPane root = new BorderPane();
 
+        SyncableSet selectorUpdates = new SyncableSet();
+        final EditableSelect editSelector = new EditableSelect(selectorUpdates, data);
         final Text status = new Text("");
 
         notify.listen(new Runnable() {
@@ -142,8 +144,10 @@ public class ZERStage {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
 
-        final SurfaceItemEditor editor = new SurfaceItemEditor(left, data, surface, syncs, notify);
-        final ActionBar actions = new ActionBar(right, data, surface, plugins, syncs);
+        final SurfaceItemEditor editor = new SurfaceItemEditor(editSelector, left, data, surface, syncs, notify);
+        final ActionBar actions = new ActionBar(editSelector, right, data, surface, plugins, syncs);
+        selectorUpdates.add(actions);
+        selectorUpdates.add(editor);
         syncs.add(editor);
         syncs.add(actions);
         syncs.add(menuSync);

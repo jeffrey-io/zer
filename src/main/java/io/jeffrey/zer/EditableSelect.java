@@ -1,7 +1,6 @@
 package io.jeffrey.zer;
 
 import java.util.Iterator;
-import java.util.Set;
 import java.util.TreeSet;
 
 import javafx.beans.value.ChangeListener;
@@ -17,39 +16,39 @@ public class EditableSelect {
 	private final Syncable parent;
 	private String selectedId = null;
 	private Editable current;
+	private final SurfaceData data;
 
-	public EditableSelect(Syncable parent) {
+	String officialLast = null;
+	String officialNext = null;
+
+	public EditableSelect(Syncable parent, SurfaceData data) {
 		this.parent = parent;
+		this.data = data;
 	}
 
 	public Editable current() {
 		return current;
 	}
 
-	public HBox create(Set<Editable> edits) {
-		HBox hbox = new HBox();
+	private void set(String id) {
+		selectedId = id;
+		updateCache();
 
-		if (edits.size() == 1) {
-			current = edits.iterator().next();
-			selectedId = current.id();
-		}
-		
-		if (edits.size() <= 1)
-			return hbox;
+		parent.sync();
+	}
 
-		TreeSet<String> ids = new TreeSet<String>();
-		for (Editable edit : edits) {
+	TreeSet<String> ids = new TreeSet<String>();
+
+	private void updateCache() {
+		String last = null;
+		boolean keep = false;
+		ids.clear();
+		for (Editable edit : data.getEditables()) {
 			ids.add(edit.id());
 			if (edit.id().equals(selectedId)) {
 				current = edit;
 			}
 		}
-
-		String officialLast = null;
-		String officialNext = null;
-		String last = null;
-		boolean keep = false;
-
 		Iterator<String> it = ids.iterator();
 		while (it.hasNext()) {
 			String me = it.next();
@@ -66,56 +65,62 @@ public class EditableSelect {
 		if (!keep) {
 			selectedId = null;
 		}
-		// TODO: create control to show a '*', '<', dropdown, '>'
+	}
+
+	public HBox create() {
+		HBox hbox = new HBox();
+
+		updateCache();
+
+		if (data.getEditables().size() <= 1)
+			return hbox;
 
 		Button All = new Button("*");
 		All.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				selectedId = null;
-				parent.sync();
+				set(null);
 			}
 		});
 		hbox.getChildren().add(All);
 
 		if (officialLast != null) {
-			final String oLast = officialLast;
-			Button Previous = new Button(oLast);
+			Button Previous = new Button(officialLast);
 			Previous.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					selectedId = oLast;
-					parent.sync();
+					set(officialLast);
 				}
 			});
 			hbox.getChildren().add(Previous);
 		}
 
-		ComboBox<String> Select = new ComboBox<String>();
-		Select.itemsProperty().get().addAll(ids);
-		if (selectedId != null) {
-			Select.valueProperty().set(selectedId);
-		} else {
-			Select.valueProperty().set("*");
-		}
-		Select.valueProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(final ObservableValue<? extends String> val,
-					final String before, final String after) {
-				selectedId = after;
-				parent.sync();
+		{
+			ComboBox<String> Select = new ComboBox<String>();
+			Select.itemsProperty().get().addAll(ids);
+			if (selectedId != null) {
+				Select.valueProperty().set(selectedId);
+			} else {
+				Select.valueProperty().set("*");
 			}
-		});
-		hbox.getChildren().add(Select);
+			Select.valueProperty().addListener(new ChangeListener<String>() {
+				@Override
+				public void changed(
+						final ObservableValue<? extends String> val,
+						final String before, final String after) {
+					selectedId = after;
+					parent.sync();
+				}
+			});
+			hbox.getChildren().add(Select);
+		}
 
 		if (officialNext != null) {
 			Button Next = new Button(officialNext);
-			String oNext = officialNext;
 			Next.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent arg0) {
-					selectedId = oNext;
-					parent.sync();
+					set(officialNext);
 				}
 			});
 			hbox.getChildren().add(Next);

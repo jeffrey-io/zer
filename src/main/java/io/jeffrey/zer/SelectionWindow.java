@@ -19,7 +19,22 @@ public class SelectionWindow {
     private double  y0;
     private double  y1;
     public Mode mode;
-    public static enum Mode { Set, Add, Subtract };
+
+	public static enum Mode {
+		Set, Add, Subtract;
+
+		public boolean selected(boolean oldValue, boolean newValue) {
+			if (this == Add) {
+				return newValue || oldValue;
+			}
+			if (this == Subtract) {
+				if (oldValue && newValue)
+					return false;
+				return oldValue;
+			}
+		return newValue;
+		}
+	};
 
     /**
      * create an empty window
@@ -116,7 +131,7 @@ public class SelectionWindow {
      *            the current y coordinate
      */
     public void update(final double uX, final double uY, Mode mode) {
-        x1 = uX;
+    	x1 = uX;
         y1 = uY;
         x = Math.min(x0, x1);
         y = Math.min(y0, y1);

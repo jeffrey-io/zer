@@ -24,7 +24,6 @@ public class SelectionBand implements MouseInteraction {
         this.data = data;
         this.window = window;
         window.start(event.position.x_0, event.position.y_0);
-        data.initiateSelectionWindow();
     }
 
     /**

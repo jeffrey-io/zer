@@ -121,8 +121,9 @@ public class Surface {
      */
     public MouseInteraction startInteraction(final MouseEvent event) {
         final AdjustedMouseEvent aevent = new AdjustedMouseEvent(camera, event.getX(), event.getY(), event.isAltDown(), event.isControlDown());
+        data.initiateSelectionWindow();
 
-        if (event.isControlDown() && event.isPrimaryButtonDown() || event.isMiddleButtonDown()) {
+        if (event.isControlDown() && event.isSecondaryButtonDown() || event.isMiddleButtonDown()) {
             return new Pan(camera, event);
         }
 

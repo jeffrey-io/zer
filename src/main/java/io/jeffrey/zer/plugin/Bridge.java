@@ -69,7 +69,7 @@ public class Bridge extends ImporterTopLevel {
         final Object json = NativeJSON.stringify(Context.getCurrentContext(), this, thing, NULL_CALLABLE, NULL_CALLABLE);
         final String pretty = (String) json;
         // TODO: add a visual way of understanding what is happening with the, you know, thing
-        System.out.println(pretty);
+        System.err.println(pretty);
     }
 
     /**

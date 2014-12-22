@@ -18,6 +18,8 @@ public class SelectionWindow {
     private double  y;
     private double  y0;
     private double  y1;
+    public Mode mode;
+    public static enum Mode { Set, Add, Subtract };
 
     /**
      * create an empty window
@@ -113,12 +115,13 @@ public class SelectionWindow {
      * @param uY
      *            the current y coordinate
      */
-    public void update(final double uX, final double uY) {
+    public void update(final double uX, final double uY, Mode mode) {
         x1 = uX;
         y1 = uY;
         x = Math.min(x0, x1);
         y = Math.min(y0, y1);
         w = Math.max(x0, x1) - x;
         h = Math.max(y0, y1) - y;
+        this.mode = mode;
     }
 }

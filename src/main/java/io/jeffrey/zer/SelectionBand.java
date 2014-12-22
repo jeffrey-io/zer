@@ -1,5 +1,7 @@
 package io.jeffrey.zer;
 
+import io.jeffrey.zer.SelectionWindow.Mode;
+
 /**
  * Defines a selection band that is updated
  *
@@ -22,6 +24,7 @@ public class SelectionBand implements MouseInteraction {
         this.data = data;
         this.window = window;
         window.start(event.position.x_0, event.position.y_0);
+        data.initiateSelectionWindow();
     }
 
     /**
@@ -46,7 +49,7 @@ public class SelectionBand implements MouseInteraction {
      */
     @Override
     public void moved(final AdjustedMouseEvent event) {
-        window.update(event.position.x_0, event.position.y_0);
+        window.update(event.position.x_0, event.position.y_0, event.altdown ? Mode.Add : Mode.Set);
         if (!window.empty()) {
             data.updateSelectionWindow(window);
         }

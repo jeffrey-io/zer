@@ -14,6 +14,7 @@ public class AdjustedMouseEvent {
      * is the alt key held down
      */
     public final boolean         altdown;
+    public final boolean ctrldown;
     private final Camera         camera;
 
     public final double          clientX;
@@ -32,13 +33,14 @@ public class AdjustedMouseEvent {
      * @param event
      *            the raw event
      */
-    public AdjustedMouseEvent(final Camera camera, final double x, final double y, final boolean altdown) {
+    public AdjustedMouseEvent(final Camera camera, final double x, final double y, final boolean altdown, final boolean ctrldown) {
         position = new VectorRegister8();
         clientX = x;
         clientY = y;
         position.set_0((clientX - camera.tX) / camera.scale, (clientY - camera.tY) / camera.scale);
         this.camera = camera;
         this.altdown = altdown;
+        this.ctrldown = ctrldown;
     }
 
     /**

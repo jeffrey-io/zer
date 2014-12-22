@@ -178,6 +178,11 @@ public abstract class SurfaceData {
     public abstract MouseInteraction startSurfaceInteraction(final AdjustedMouseEvent event, double width, double height);
 
     /**
+     * indicate that a selection window has been initiated
+     */
+    public abstract void initiateSelectionWindow();
+    
+    /**
      * force the selection window over all the details
      *
      * @param window

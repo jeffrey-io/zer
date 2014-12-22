@@ -69,15 +69,6 @@ public class Surface {
         gc.setFill(Color.WHITESMOKE);
         gc.fillRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
-        double gridSize = Math.pow(2, 16);
-
-        boolean ok = false;
-        while (!ok && gridSize > 1) {
-            gridSize /= 2;
-            final double d = Math.ceil(camera.projY(canvas.getHeight()) / gridSize) - Math.floor(camera.projY(0) / gridSize);
-            ok = d > 16;
-        }
-
         gc.save();
 
         // draw the cursor beam
@@ -101,11 +92,7 @@ public class Surface {
                 gc.setLineWidth(1.5);
                 drawGridLines(layer.gridMajor.value(), gc);
             }
-        } else {
-            gc.setStroke(Color.DARKGRAY);
-            gc.setLineWidth(0.5);
-            drawGridLines(gridSize, gc);
-        }
+       }
         gc.restore();
 
         gc.save();

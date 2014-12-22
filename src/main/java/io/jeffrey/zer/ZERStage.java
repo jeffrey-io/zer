@@ -16,6 +16,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
@@ -23,6 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -160,7 +162,8 @@ public class ZERStage {
 
         surface.render();
 
-        final Scene scene = new Scene(root, 900, 950);
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        final Scene scene = new Scene(root, screenBounds.getWidth() - 120, screenBounds.getHeight() - 80);
         stage.setTitle(data.getTitle());
         stage.setScene(scene);
         center.widthProperty().addListener(new ChangeListener<Number>() {

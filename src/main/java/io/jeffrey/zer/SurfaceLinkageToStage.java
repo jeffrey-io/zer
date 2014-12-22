@@ -128,6 +128,7 @@ public class SurfaceLinkageToStage {
 
         final Menu top_view = new Menu("View");
         final MenuItem _reset_camera = new MenuItem("Reset Camera");
+        final MenuItem _full_screen = new MenuItem("Toggle FullScreen");
 
         _reset_camera.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -136,6 +137,14 @@ public class SurfaceLinkageToStage {
                 surface.resetCamera();
                 syncable.sync();
                 surface.render();
+            }
+        });
+        
+        _full_screen.setOnAction(new EventHandler<ActionEvent>() {
+
+            @Override
+            public void handle(final ActionEvent arg0) {
+            	stage.setFullScreen(!stage.isFullScreen());
             }
         });
 
@@ -216,7 +225,7 @@ public class SurfaceLinkageToStage {
         });
 
         top_file.getItems().addAll(_new, _open, _save, _saveAs, _close);
-        top_view.getItems().addAll(_reset_camera);
+        top_view.getItems().addAll(_reset_camera, _full_screen);
 
         menuSync.add(new Syncable() {
 

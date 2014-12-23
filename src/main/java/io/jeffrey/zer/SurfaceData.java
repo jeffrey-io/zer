@@ -27,6 +27,8 @@ public abstract class SurfaceData {
         Copy, Cut, DeleteSelection, InverseSelection, NewFile, Paste, Redo, Save, SelectAll, Undo, ZoomAll, ZoomSelection
     }
 
+    public abstract IconResolver getIconResolver();
+    
     /**
      * indicate that we should open
      *

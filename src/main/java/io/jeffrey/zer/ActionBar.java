@@ -1,5 +1,6 @@
 package io.jeffrey.zer;
 
+import io.jeffrey.zer.IconResolver.IconType;
 import io.jeffrey.zer.plugin.Plugin;
 
 import java.util.ArrayList;
@@ -14,6 +15,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -30,6 +34,7 @@ public class ActionBar implements Syncable {
 	private final VBox vbox;
 
 	private final EditableSelect selector;
+	private final IconResolver resolver;
 
 	/**
 	 * @param vbox
@@ -44,15 +49,16 @@ public class ActionBar implements Syncable {
 	 *            what to update once an action has been performed
 	 *
 	 */
-	public ActionBar(final EditableSelect selector, final VBox vbox, final SurfaceData data,
-			final Surface surface, final HashMap<String, Plugin> plugins,
-			final Syncable syncable) {
+	public ActionBar(final EditableSelect selector, final VBox vbox,
+			final SurfaceData data, final Surface surface,
+			final HashMap<String, Plugin> plugins, final Syncable syncable) {
 		this.vbox = vbox;
 		this.data = data;
 		this.surface = surface;
 		this.plugins = plugins;
 		this.syncable = syncable;
 		this.selector = selector;
+		this.resolver = data.getIconResolver();
 	}
 
 	private void syncCommon(final Set<Editable> edits) {
@@ -138,7 +144,22 @@ public class ActionBar implements Syncable {
 	private void syncAddables() {
 		final ObservableList<Node> children = vbox.getChildren();
 		for (final String addable : data.getAddables()) {
-			final Button button = new Button("Add " + addable);
+
+			Image icon;
+			try {
+				icon = resolver.get(IconType.Addable, addable);
+			} catch (Exception e) {
+				icon = null;
+			}
+
+			final Button button;
+			if (icon == null) {
+				button = new Button("Add " + addable);
+			} else {
+				ImageView img = new ImageView(icon);
+				button = new Button("", img);
+			}
+			button.setTooltip(new Tooltip("add a " + addable));
 			button.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(final ActionEvent arg0) {
@@ -147,6 +168,7 @@ public class ActionBar implements Syncable {
 					syncable.sync();
 				}
 			});
+
 			children.add(button);
 		}
 	}
@@ -193,13 +215,13 @@ public class ActionBar implements Syncable {
 		vbox.getChildren().clear();
 
 		vbox.getChildren().add(selector.create());
-		
+
 		Editable current = selector.current();
 		if (edits.size() == 0) {
 			syncAddables();
 			return;
 		} else {
-			if(edits.size() == 1) {
+			if (edits.size() == 1) {
 				current = edits.iterator().next();
 			}
 			if (current != null) {
@@ -208,16 +230,12 @@ public class ActionBar implements Syncable {
 				syncCommon(edits);
 			}
 		}
-		
+
 		/*
-		
-		// we have more than one thing
-		if (edits.size() > 1) {
-			syncCommon(edits);
-		}
-		for (final Editable editable : edits) {
-			syncSingle(editable);
-		}
-		*/
+		 * 
+		 * // we have more than one thing if (edits.size() > 1) {
+		 * syncCommon(edits); } for (final Editable editable : edits) {
+		 * syncSingle(editable); }
+		 */
 	}
 }

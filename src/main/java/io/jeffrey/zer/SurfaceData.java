@@ -24,7 +24,7 @@ public abstract class SurfaceData {
      * @author jeffrey
      */
     public static enum SurfaceAction {
-        Copy, Cut, DeleteSelection, InverseSelection, NewFile, Paste, Redo, Save, SelectAll, Undo
+        Copy, Cut, DeleteSelection, InverseSelection, NewFile, Paste, Redo, Save, SelectAll, Undo, ZoomAll, ZoomSelection
     }
 
     /**

@@ -127,6 +127,9 @@ public class SurfaceLinkageToStage {
         final Menu top_plugins = new Menu("Plugins");
 
         final Menu top_view = new Menu("View");
+        final MenuItem _zoom_all = actionOf("Zoom All", SurfaceAction.ZoomAll, surface, data, stage, syncable, menuSync, notify);
+        final MenuItem _zoom_selection = actionOf("Zoom to Selection", SurfaceAction.ZoomSelection, surface, data, stage, syncable, menuSync, notify);
+        
         final MenuItem _reset_camera = new MenuItem("Reset Camera");
         final MenuItem _full_screen = new MenuItem("Toggle FullScreen");
 
@@ -225,7 +228,7 @@ public class SurfaceLinkageToStage {
         });
 
         top_file.getItems().addAll(_new, _open, _save, _saveAs, _close);
-        top_view.getItems().addAll(_reset_camera, _full_screen);
+        top_view.getItems().addAll(_zoom_all, _zoom_selection, _reset_camera, _full_screen);
 
         menuSync.add(new Syncable() {
 

@@ -45,7 +45,7 @@ public abstract class SurfaceData {
      * @param y
      *            the y coordinate of where to put something
      */
-    public abstract void add(String type, double x, double y);
+    public abstract void add(String type, SurfaceContext context);
 
     /**
      * @param action
@@ -67,7 +67,7 @@ public abstract class SurfaceData {
      * @param camera
      *            the camera of the viewport
      */
-    public abstract void draw(GraphicsContext gc, Camera camera, double width, double height);
+    public abstract void draw(GraphicsContext gc, SurfaceContext context);
 
     /**
      * Execute the given action that has no arguments
@@ -81,7 +81,7 @@ public abstract class SurfaceData {
      * @throws Exception
      *             we (for some reason) were unable to execute the request
      */
-    public abstract void execute(SurfaceAction action, double x, double y) throws Exception;
+    public abstract void execute(SurfaceAction action, SurfaceContext context) throws Exception;
 
     /**
      * @return the active layer for the first selected item

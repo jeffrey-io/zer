@@ -40,9 +40,9 @@ public class SurfaceLinkageToStage {
             @Override
             public void handle(final ActionEvent evt) {
                 try {
-                    data.execute(action, surface.cursor_x, surface.cursor_y);
+                    data.execute(action, surface.context());
                 } catch (final Exception failure) {
-                    notify.println(failure, "unable to perform ", label, " at ", surface.cursor_x + "," + surface.cursor_y);
+                    notify.println(failure, "unable to perform ", label, " at ", surface.context().toString());
                 }
                 syncable.sync();
                 surface.render();
@@ -152,7 +152,7 @@ public class SurfaceLinkageToStage {
             @Override
             public void handle(final ActionEvent arg0) {
                 try {
-                    data.execute(SurfaceAction.NewFile, surface.cursor_x, surface.cursor_y);
+                    data.execute(SurfaceAction.NewFile, surface.context());
                 } catch (final Exception failure) {
                     notify.println(failure, "unable to create new file");
                 }
@@ -185,7 +185,7 @@ public class SurfaceLinkageToStage {
                 if (data.setFile(file)) {
                     stage.setTitle(file.getName());
                     try {
-                        data.execute(SurfaceAction.Save, surface.cursor_x, surface.cursor_y);
+                        data.execute(SurfaceAction.Save, surface.context());
                         stage.setTitle(data.getTitle());
                     } catch (final Exception failure) {
                         notify.println(failure, "unable to save as:" + file.toString());
@@ -205,7 +205,7 @@ public class SurfaceLinkageToStage {
                     saveAsEvent.handle(arg0);
                 } else {
                     try {
-                        data.execute(SurfaceAction.Save, surface.cursor_x, surface.cursor_y);
+                        data.execute(SurfaceAction.Save, surface.context());
                         stage.setTitle(data.getTitle());
                     } catch (final Exception failure) {
                         notify.println(failure, "unable to save");

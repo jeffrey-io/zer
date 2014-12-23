@@ -18,8 +18,8 @@ public class Surface {
     private final Camera          camera;
     private final Canvas          canvas;
 
-    public double                 cursor_x;
-    public double                 cursor_y;
+    private final SurfaceContext context;
+    
     private final SurfaceData     data;
     private final SelectionWindow window;
 
@@ -36,8 +36,7 @@ public class Surface {
         this.data = data;
         camera = data.getCamera();
         window = new SelectionWindow();
-        cursor_x = 0;
-        cursor_y = 0;
+        this.context = new SurfaceContext(camera);
     }
 
     private void drawGridLines(final double gridSize, final GraphicsContext gc) {
@@ -60,6 +59,12 @@ public class Surface {
         return d < (canvas.getHeight() + canvas.getWidth()) / 20.0;
     }
 
+    public SurfaceContext context() {
+    	context.width = canvas.getWidth();
+    	context.height = canvas.getHeight();
+    	return context;
+    }
+    
     /**
      * draw the surface
      */
@@ -74,8 +79,8 @@ public class Surface {
         // draw the cursor beam
         gc.setStroke(Color.GREEN);
         gc.setLineWidth(0.75);
-        gc.strokeLine(camera.x(cursor_x), 0, camera.x(cursor_x), canvas.getHeight());
-        gc.strokeLine(0, camera.y(cursor_y), canvas.getWidth(), camera.y(cursor_y));
+        gc.strokeLine(camera.x(context.cursor_x), 0, camera.x(context.cursor_x), canvas.getHeight());
+        gc.strokeLine(0, camera.y(context.cursor_y), canvas.getWidth(), camera.y(context.cursor_y));
 
         final LayerProperties layer = data.getActiveLayer();
 
@@ -97,7 +102,7 @@ public class Surface {
 
         gc.save();
         try {
-            data.draw(gc, camera, canvas.getWidth(), canvas.getHeight());
+        	data.draw(gc, context());
         } finally {
             gc.restore();
         }
@@ -140,8 +145,8 @@ public class Surface {
             return interaction;
         }
 
-        cursor_x = aevent.position.x_0;
-        cursor_y = aevent.position.y_0;
+        context.cursor_x = aevent.position.x_0;
+        context.cursor_y = aevent.position.y_0;
 
         if (event.isPrimaryButtonDown()) {
             return new SelectionBand(aevent, window, data);

@@ -142,7 +142,7 @@ public class ActionBar implements Syncable {
 			button.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(final ActionEvent arg0) {
-					data.add(addable, surface.cursor_x, surface.cursor_y);
+					data.add(addable, surface.context());
 					surface.render();
 					syncable.sync();
 				}

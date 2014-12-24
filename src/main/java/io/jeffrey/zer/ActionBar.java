@@ -32,11 +32,11 @@ public class ActionBar implements Syncable {
 	private final Surface surface;
 	private final Syncable syncable;
 	private final VBox vbox;
-
 	private final EditableSelect selector;
 	private final IconResolver resolver;
 
 	/**
+	 * @param selector the method for selecting a selected editable among an editable set
 	 * @param vbox
 	 *            the host to the action bar
 	 * @param data
@@ -61,6 +61,10 @@ public class ActionBar implements Syncable {
 		this.resolver = data.getIconResolver();
 	}
 
+	/**
+	 * sync the common operations
+	 * @param edits the selected editables
+	 */
 	private void syncCommon(final Set<Editable> edits) {
 		final ObservableList<Node> children = vbox.getChildren();
 		// compute the common elements by intersecting them all
@@ -141,6 +145,9 @@ public class ActionBar implements Syncable {
 		}
 	}
 
+	/**
+	 * sync all the things that can be added
+	 */
 	private void syncAddables() {
 		final ObservableList<Node> children = vbox.getChildren();
 		for (final String addable : data.getAddables()) {
@@ -173,6 +180,10 @@ public class ActionBar implements Syncable {
 		}
 	}
 
+	/**
+	 * sync a single editable thing
+	 * @param editable the editable thing that has actions available
+	 */
 	private void syncSingle(Editable editable) {
 		final ObservableList<Node> children = vbox.getChildren();
 		children.add(new Text("ID:" + editable.id()));
@@ -230,12 +241,5 @@ public class ActionBar implements Syncable {
 				syncCommon(edits);
 			}
 		}
-
-		/*
-		 * 
-		 * // we have more than one thing if (edits.size() > 1) {
-		 * syncCommon(edits); } for (final Editable editable : edits) {
-		 * syncSingle(editable); }
-		 */
 	}
 }

@@ -1,9 +1,21 @@
 package io.jeffrey.zer;
 
+/**
+ * 
+ * a context for operations happening against the surface
+ * 
+ * @author jeffrey
+ *
+ */
 public class SurfaceContext {
 
 	public final Camera camera;
 
+	/**
+	 * the camera
+	 * 
+	 * @param camera
+	 */
 	public SurfaceContext(Camera camera) {
 		this.camera = camera;
 		this.cursor_x = 0;

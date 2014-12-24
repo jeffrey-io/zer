@@ -14,12 +14,15 @@ public class AdjustedMouseEvent {
      * is the alt key held down
      */
     public final boolean         altdown;
+    
+    /**C
+     * the control key is held down
+     */
     public final boolean ctrldown;
+    
     private final Camera         camera;
-
     public final double          clientX;
     public final double          clientY;
-
     public final VectorRegister8 position;
 
     /**

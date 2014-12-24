@@ -139,7 +139,7 @@ public class Surface {
             }
         }
 
-        final MouseInteraction interaction = data.startSurfaceInteraction(aevent, canvas.getWidth(), canvas.getHeight());
+        final MouseInteraction interaction = data.startSurfaceInteraction(aevent, context());
 
         if (interaction != null) {
             return interaction;

@@ -27,6 +27,9 @@ public abstract class SurfaceData {
         Copy, Cut, DeleteSelection, InverseSelection, NewFile, Paste, Redo, Save, SelectAll, Undo, ZoomAll, ZoomSelection
     }
 
+    /**
+     * @return the method for how to resolve icons
+     */
     public abstract IconResolver getIconResolver();
     
     /**
@@ -42,10 +45,7 @@ public abstract class SurfaceData {
      *
      * @param type
      *            of the given type
-     * @param x
-     *            the x coordinate of where to put something
-     * @param y
-     *            the y coordinate of where to put something
+     * @param context the surface context for the request
      */
     public abstract void add(String type, SurfaceContext context);
 
@@ -66,8 +66,7 @@ public abstract class SurfaceData {
      *
      * @param gc
      *            the graphis context to draw
-     * @param camera
-     *            the camera of the viewport
+     * @param context the surface context for the request
      */
     public abstract void draw(GraphicsContext gc, SurfaceContext context);
 
@@ -76,10 +75,7 @@ public abstract class SurfaceData {
      *
      * @param action
      *            the action to execute
-     * @param x
-     *            the x coordinate of where the cursor is for execution
-     * @param y
-     *            the y coordinate of where the cursor is for execution
+     * @param context the surface context for the request
      * @throws Exception
      *             we (for some reason) were unable to execute the request
      */
@@ -175,9 +171,10 @@ public abstract class SurfaceData {
      *
      * @param event
      *            the mouse event that has been transformed into the surface's world space
+     * @param context the surface context for the request
      * @return a mouse interaction
      */
-    public abstract MouseInteraction startSurfaceInteraction(final AdjustedMouseEvent event, double width, double height);
+    public abstract MouseInteraction startSurfaceInteraction(final AdjustedMouseEvent event, SurfaceContext context);
 
     /**
      * indicate that a selection window has been initiated

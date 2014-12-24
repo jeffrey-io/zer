@@ -19,6 +19,11 @@ public class SelectionWindow {
     private double  y0;
     private double  y1;
     public Mode mode;
+    
+    /**
+     * an algebraic mode for how selection should work
+     * @author jeffrey
+     */
 
 	public static enum Mode {
 		Set, Add, Subtract;
@@ -129,6 +134,7 @@ public class SelectionWindow {
      *            the current x coordinate
      * @param uY
      *            the current y coordinate
+     * @param mode the current algebraic mode for selection (set, add, subtract)
      */
     public void update(final double uX, final double uY, Mode mode) {
     	x1 = uX;

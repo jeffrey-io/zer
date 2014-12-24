@@ -11,33 +11,41 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
 
+/**
+ * Handy dandy helper to create and bind controls to manipulate the currently
+ * selected editable
+ * 
+ * @author jeffrey
+ *
+ */
 public class EditableSelect {
 
+	private final TreeSet<String> ids;
 	private final Syncable parent;
-	private String selectedId = null;
-	private Editable current;
 	private final SurfaceData data;
 
-	String officialLast = null;
-	String officialNext = null;
+	private String id = null;
+	private String priorId = null;
+	private String nextId = null;
+
+	private Editable current;
 
 	public EditableSelect(Syncable parent, SurfaceData data) {
 		this.parent = parent;
 		this.data = data;
+		this.ids = new TreeSet<String>();
 	}
 
 	public Editable current() {
 		return current;
 	}
 
-	private void set(String id) {
-		selectedId = id;
+	private void set(String newId) {
+		id = newId;
 		updateCache();
 
 		parent.sync();
 	}
-
-	TreeSet<String> ids = new TreeSet<String>();
 
 	private void updateCache() {
 		String last = null;
@@ -45,25 +53,24 @@ public class EditableSelect {
 		ids.clear();
 		for (Editable edit : data.getEditables()) {
 			ids.add(edit.id());
-			if (edit.id().equals(selectedId)) {
+			if (edit.id().equals(id)) {
 				current = edit;
 			}
 		}
 		Iterator<String> it = ids.iterator();
 		while (it.hasNext()) {
 			String me = it.next();
-			if (me.equals(selectedId)) {
-				officialLast = last;
+			if (me.equals(id)) {
+				priorId = last;
 				keep = true;
 				if (it.hasNext()) {
-					officialNext = it.next();
+					nextId = it.next();
 				}
 			}
 			last = me;
 		}
-
 		if (!keep) {
-			selectedId = null;
+			id = null;
 		}
 	}
 
@@ -78,18 +85,18 @@ public class EditableSelect {
 		Button All = new Button("*");
 		All.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
-			public void handle(ActionEvent arg0) {
+			public void handle(ActionEvent dontcare) {
 				set(null);
 			}
 		});
 		hbox.getChildren().add(All);
 
-		if (officialLast != null) {
-			Button Previous = new Button(officialLast);
+		if (priorId != null) {
+			Button Previous = new Button(priorId);
 			Previous.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
-				public void handle(ActionEvent arg0) {
-					set(officialLast);
+				public void handle(ActionEvent dontcare) {
+					set(priorId);
 				}
 			});
 			hbox.getChildren().add(Previous);
@@ -98,8 +105,8 @@ public class EditableSelect {
 		{
 			ComboBox<String> Select = new ComboBox<String>();
 			Select.itemsProperty().get().addAll(ids);
-			if (selectedId != null) {
-				Select.valueProperty().set(selectedId);
+			if (id != null) {
+				Select.valueProperty().set(id);
 			} else {
 				Select.valueProperty().set("*");
 			}
@@ -108,19 +115,19 @@ public class EditableSelect {
 				public void changed(
 						final ObservableValue<? extends String> val,
 						final String before, final String after) {
-					selectedId = after;
+					id = after;
 					parent.sync();
 				}
 			});
 			hbox.getChildren().add(Select);
 		}
 
-		if (officialNext != null) {
-			Button Next = new Button(officialNext);
+		if (nextId != null) {
+			Button Next = new Button(nextId);
 			Next.setOnAction(new EventHandler<ActionEvent>() {
 				@Override
-				public void handle(ActionEvent arg0) {
-					set(officialNext);
+				public void handle(ActionEvent dontcare) {
+					set(nextId);
 				}
 			});
 			hbox.getChildren().add(Next);

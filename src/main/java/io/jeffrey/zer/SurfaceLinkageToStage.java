@@ -129,7 +129,7 @@ public class SurfaceLinkageToStage {
         final Menu top_view = new Menu("View");
         final MenuItem _zoom_all = actionOf("Zoom All", SurfaceAction.ZoomAll, surface, data, stage, syncable, menuSync, notify);
         final MenuItem _zoom_selection = actionOf("Zoom to Selection", SurfaceAction.ZoomSelection, surface, data, stage, syncable, menuSync, notify);
-        
+
         final MenuItem _reset_camera = new MenuItem("Reset Camera");
         final MenuItem _full_screen = new MenuItem("Toggle FullScreen");
 
@@ -142,12 +142,12 @@ public class SurfaceLinkageToStage {
                 surface.render();
             }
         });
-        
+
         _full_screen.setOnAction(new EventHandler<ActionEvent>() {
 
             @Override
             public void handle(final ActionEvent arg0) {
-            	stage.setFullScreen(!stage.isFullScreen());
+                stage.setFullScreen(!stage.isFullScreen());
             }
         });
 

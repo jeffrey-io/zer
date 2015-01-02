@@ -28,11 +28,6 @@ public abstract class SurfaceData {
     }
 
     /**
-     * @return the method for how to resolve icons
-     */
-    public abstract IconResolver getIconResolver();
-    
-    /**
      * indicate that we should open
      *
      * @param file
@@ -45,7 +40,8 @@ public abstract class SurfaceData {
      *
      * @param type
      *            of the given type
-     * @param context the surface context for the request
+     * @param context
+     *            the surface context for the request
      */
     public abstract void add(String type, SurfaceContext context);
 
@@ -66,7 +62,8 @@ public abstract class SurfaceData {
      *
      * @param gc
      *            the graphis context to draw
-     * @param context the surface context for the request
+     * @param context
+     *            the surface context for the request
      */
     public abstract void draw(GraphicsContext gc, SurfaceContext context);
 
@@ -75,7 +72,8 @@ public abstract class SurfaceData {
      *
      * @param action
      *            the action to execute
-     * @param context the surface context for the request
+     * @param context
+     *            the surface context for the request
      * @throws Exception
      *             we (for some reason) were unable to execute the request
      */
@@ -100,6 +98,11 @@ public abstract class SurfaceData {
      * @return a set of all the things that can be edited
      */
     public abstract Set<Editable> getEditables();
+
+    /**
+     * @return the method for how to resolve icons
+     */
+    public abstract IconResolver getIconResolver();
 
     /**
      * @return all layers
@@ -144,6 +147,11 @@ public abstract class SurfaceData {
     public abstract String getTitle();
 
     /**
+     * indicate that a selection window has been initiated
+     */
+    public abstract void initiateSelectionWindow();
+
+    /**
      * Test whether or not the given event is in a selected item
      *
      * @param event
@@ -171,16 +179,12 @@ public abstract class SurfaceData {
      *
      * @param event
      *            the mouse event that has been transformed into the surface's world space
-     * @param context the surface context for the request
+     * @param context
+     *            the surface context for the request
      * @return a mouse interaction
      */
     public abstract MouseInteraction startSurfaceInteraction(final AdjustedMouseEvent event, SurfaceContext context);
 
-    /**
-     * indicate that a selection window has been initiated
-     */
-    public abstract void initiateSelectionWindow();
-    
     /**
      * force the selection window over all the details
      *

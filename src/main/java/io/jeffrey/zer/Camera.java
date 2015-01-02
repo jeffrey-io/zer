@@ -29,19 +29,6 @@ public class Camera {
     }
 
     /**
-     * set the camera such that the scane and translation fit the given bounds
-     * @param bounds the bounds (minimum point in the 0 vector and maximum point in the 1 vector)
-     * @param context the size of the screen
-     */
-	public void zoom(VectorRegister2 bounds, SurfaceContext context) {
-		double pad = 6.5;
-		scale = Math.min((context.width - pad) / (bounds.x_1 - bounds.x_0),
-				(context.height - pad) / (bounds.y_1 - bounds.y_0));
-		tX = -((bounds.x_1 + bounds.x_0) / 2.0 * scale - context.width / 2.0);
-		tY = -((bounds.y_1 + bounds.y_0) / 2.0 * scale - context.height / 2.0);
-	}
-    
-    /**
      * transform the screen value into the world space
      *
      * @param x
@@ -105,5 +92,20 @@ public class Camera {
      */
     public double y(final double y) {
         return y * scale + tY;
+    }
+
+    /**
+     * set the camera such that the scane and translation fit the given bounds
+     * 
+     * @param bounds
+     *            the bounds (minimum point in the 0 vector and maximum point in the 1 vector)
+     * @param context
+     *            the size of the screen
+     */
+    public void zoom(final VectorRegister2 bounds, final SurfaceContext context) {
+        final double pad = 6.5;
+        scale = Math.min((context.width - pad) / (bounds.x_1 - bounds.x_0), (context.height - pad) / (bounds.y_1 - bounds.y_0));
+        tX = -((bounds.x_1 + bounds.x_0) / 2.0 * scale - context.width / 2.0);
+        tY = -((bounds.y_1 + bounds.y_0) / 2.0 * scale - context.height / 2.0);
     }
 }

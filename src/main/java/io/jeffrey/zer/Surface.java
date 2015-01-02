@@ -18,8 +18,8 @@ public class Surface {
     private final Camera          camera;
     private final Canvas          canvas;
 
-    private final SurfaceContext context;
-    
+    private final SurfaceContext  context;
+
     private final SurfaceData     data;
     private final SelectionWindow window;
 
@@ -36,7 +36,16 @@ public class Surface {
         this.data = data;
         camera = data.getCamera();
         window = new SelectionWindow();
-        this.context = new SurfaceContext(camera);
+        context = new SurfaceContext(camera);
+    }
+
+    /**
+     * @return the current/updated surface context
+     */
+    public SurfaceContext context() {
+        context.width = canvas.getWidth();
+        context.height = canvas.getHeight();
+        return context;
     }
 
     private void drawGridLines(final double gridSize, final GraphicsContext gc) {
@@ -59,12 +68,6 @@ public class Surface {
         return d < (canvas.getHeight() + canvas.getWidth()) / 20.0;
     }
 
-    public SurfaceContext context() {
-    	context.width = canvas.getWidth();
-    	context.height = canvas.getHeight();
-    	return context;
-    }
-    
     /**
      * draw the surface
      */
@@ -97,12 +100,12 @@ public class Surface {
                 gc.setLineWidth(1.5);
                 drawGridLines(layer.gridMajor.value(), gc);
             }
-       }
+        }
         gc.restore();
 
         gc.save();
         try {
-        	data.draw(gc, context());
+            data.draw(gc, context());
         } finally {
             gc.restore();
         }

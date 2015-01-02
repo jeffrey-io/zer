@@ -47,7 +47,7 @@ public class ZERStage {
         final Notifications notify = data.getNotifications();
         final BorderPane root = new BorderPane();
 
-        SyncableSet selectorUpdates = new SyncableSet();
+        final SyncableSet selectorUpdates = new SyncableSet();
         final EditableSelect editSelector = new EditableSelect(selectorUpdates, data);
         final Text status = new Text("");
 
@@ -166,7 +166,7 @@ public class ZERStage {
 
         surface.render();
 
-        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        final Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         final Scene scene = new Scene(root, screenBounds.getWidth() - 120, screenBounds.getHeight() - 80);
         stage.setTitle(data.getTitle());
         stage.setScene(scene);

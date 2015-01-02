@@ -16,80 +16,78 @@ import javafx.scene.layout.VBox;
  */
 public class SurfaceItemEditor implements Syncable {
 
-	private final EditBinding binding;
-	private final SurfaceData data;
-	private boolean skip = false;
-	private final Surface surface;
-	private final Syncable syncable;
-	private final VBox vbox;
-	private final EditableSelect selector;
+    private final EditBinding    binding;
+    private final SurfaceData    data;
+    private final EditableSelect selector;
+    private boolean              skip = false;
+    private final Surface        surface;
+    private final Syncable       syncable;
+    private final VBox           vbox;
 
-	/**
-	 * @param vbox
-	 *            where we render the items
-	 * @param data
-	 *            the data to connect with
-	 * @param surface
-	 *            the surace to render
-	 * @param syncable
-	 *            how we update other views
-	 */
-	public SurfaceItemEditor(EditableSelect selector, final VBox vbox,
-			final SurfaceData data, final Surface surface,
-			final Syncable syncable, final Notifications notify) {
-		this.selector = selector;
-		this.vbox = vbox;
-		this.data = data;
-		this.surface = surface;
-		this.syncable = syncable;
-		binding = new EditBinding(vbox, new Syncable() {
+    /**
+     * @param selector how to select the currently selected item
+     * @param vbox
+     *            where we render the items
+     * @param data
+     *            the data to connect with
+     * @param surface
+     *            the surace to render
+     * @param syncable
+     *            how we update other views
+     */
+    public SurfaceItemEditor(final EditableSelect selector, final VBox vbox, final SurfaceData data, final Surface surface, final Syncable syncable, final Notifications notify) {
+        this.selector = selector;
+        this.vbox = vbox;
+        this.data = data;
+        this.surface = surface;
+        this.syncable = syncable;
+        binding = new EditBinding(vbox, new Syncable() {
 
-			@Override
-			public void sync() {
-				refresh();
-			}
-		}, notify);
+            @Override
+            public void sync() {
+                refresh();
+            }
+        }, notify);
 
-	}
+    }
 
-	/**
-	 * update the view from a value change
-	 */
-	private void refresh() {
-		skip = true;
-		try {
-			syncable.sync();
-		} finally {
-			skip = false;
-		}
-		surface.render();
-	}
+    /**
+     * update the view from a value change
+     */
+    private void refresh() {
+        skip = true;
+        try {
+            syncable.sync();
+        } finally {
+            skip = false;
+        }
+        surface.render();
+    }
 
-	/**
-	 * Update the panel
-	 */
-	@Override
-	public void sync() {
-		if (skip) {
-			return;
-		}
-		final SurfaceItemEditorBuilderImpl builder = new SurfaceItemEditorBuilderImpl(
-				vbox, binding);
-		boolean empty = true;
-		Editable editable = selector.current();
-		if (editable == null) {
-			Set<Editable> editables = data.getEditables();
-			if (editables.size() == 1) {
-				editable = editables.iterator().next();
-			}
-		}
-		if (editable != null) {
-			empty = false;
-			editable.createEditor(data, builder, this);
-		}
-		if (empty) {
-			binding.resetFocus();
-		}
-		binding.focus();
-	}
+    /**
+     * Update the panel
+     */
+    @Override
+    public void sync() {
+        if (skip) {
+            return;
+        }
+        final SurfaceItemEditorBuilderImpl builder = new SurfaceItemEditorBuilderImpl(vbox, binding);
+        boolean empty = true;
+        Editable editable = selector.current();
+        if (editable == null) {
+            final Set<Editable> editables = data.getEditables();
+            if (editables.size() == 1) {
+                editable = editables.iterator().next();
+            }
+        }
+        if (editable != null) {
+            empty = false;
+            editable.createEditor(data, builder, this);
+        }
+        if (empty) {
+            binding.resetFocus();
+        }
+        binding.focus();
+    }
 }

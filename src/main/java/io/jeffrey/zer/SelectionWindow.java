@@ -9,37 +9,40 @@ import javafx.scene.paint.Color;
  * @author jeffrey
  */
 public class SelectionWindow {
+    /**
+     * an algebraic mode for how selection should work
+     * 
+     * @author jeffrey
+     */
+
+    public static enum Mode {
+        Add, Set, Subtract;
+
+        public boolean selected(final boolean oldValue, final boolean newValue) {
+            if (this == Add) {
+                return newValue || oldValue;
+            }
+            if (this == Subtract) {
+                if (oldValue && newValue) {
+                    return false;
+                }
+                return oldValue;
+            }
+            return newValue;
+        }
+    }
+
     private boolean engaged;
     private double  h;
+    public Mode     mode;
     private double  w;
     private double  x;
     private double  x0;
     private double  x1;
     private double  y;
     private double  y0;
-    private double  y1;
-    public Mode mode;
-    
-    /**
-     * an algebraic mode for how selection should work
-     * @author jeffrey
-     */
 
-	public static enum Mode {
-		Set, Add, Subtract;
-
-		public boolean selected(boolean oldValue, boolean newValue) {
-			if (this == Add) {
-				return newValue || oldValue;
-			}
-			if (this == Subtract) {
-				if (oldValue && newValue)
-					return false;
-				return oldValue;
-			}
-		return newValue;
-		}
-	};
+    private double  y1;      ;
 
     /**
      * create an empty window
@@ -134,10 +137,11 @@ public class SelectionWindow {
      *            the current x coordinate
      * @param uY
      *            the current y coordinate
-     * @param mode the current algebraic mode for selection (set, add, subtract)
+     * @param mode
+     *            the current algebraic mode for selection (set, add, subtract)
      */
-    public void update(final double uX, final double uY, Mode mode) {
-    	x1 = uX;
+    public void update(final double uX, final double uY, final Mode mode) {
+        x1 = uX;
         y1 = uY;
         x = Math.min(x0, x1);
         y = Math.min(y0, y1);
